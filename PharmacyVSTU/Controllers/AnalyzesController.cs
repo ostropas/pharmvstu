@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PharmacyVSTU.Models;
 
 namespace PharmacyVSTU.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AnalyzesController : ControllerBase
+    public class AnalyzesController : BasePharmacyController
     {
         /// <summary>
         /// Получить все анализы
@@ -40,6 +41,10 @@ namespace PharmacyVSTU.Controllers
         public void Update(Analyze analyze)
         {
             throw new NotImplementedException();
+        }
+
+        public AnalyzesController(ILogger<BasePharmacyController> logger, ApplicationContext db) : base(logger, db)
+        {
         }
     }
 }

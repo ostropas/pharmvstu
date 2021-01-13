@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PharmacyVSTU.Models;
 
 namespace PharmacyVSTU.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MedicalCartController : ControllerBase
+    public class MedicalCartController : BasePharmacyController
     {
         /// <summary>
         /// Добавить новую мед карту (предполагается, что там изначально должен быть клиент
@@ -47,6 +48,10 @@ namespace PharmacyVSTU.Controllers
         public List<MedicalCart> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public MedicalCartController(ILogger<BasePharmacyController> logger, ApplicationContext db) : base(logger, db)
+        {
         }
     }
 }

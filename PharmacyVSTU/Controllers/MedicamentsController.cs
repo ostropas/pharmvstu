@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PharmacyVSTU.Models;
 
 namespace PharmacyVSTU.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MedicamentsController : ControllerBase
+    public class MedicamentsController : BasePharmacyController
     {
         /// <summary>
         /// Создаем новую запись о лекарстве
@@ -52,6 +53,10 @@ namespace PharmacyVSTU.Controllers
         public void Update(Medicament medicament)
         {
             throw new NotImplementedException();
+        }
+
+        public MedicamentsController(ILogger<BasePharmacyController> logger, ApplicationContext db) : base(logger, db)
+        {
         }
     }
 }
