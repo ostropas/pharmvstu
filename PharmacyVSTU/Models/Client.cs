@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PharmacyVSTU.Models
 {
-    public class Client
+    public class Client : BasePerson
     {
         [Key] [Column("idclients")] public int Id { get; set; }
         [Column("fullname")] public string Fullname { get; set; }
