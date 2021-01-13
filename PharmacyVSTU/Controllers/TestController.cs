@@ -10,23 +10,17 @@ namespace PharmacyVSTU.Controllers
     [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        private readonly ApplicationContext _context;
+        private ApplicationContext _db;
 
-        public TestController(ApplicationContext context)
+        public TestController(ApplicationContext db)
         {
-            _context = context;
+            _db = db;
         }
-
+        
         [HttpGet]
-        public async Task<List<Client>> Simple()
+        public async Task<List<Doctor>> GetClients()
         {
-            return await _context.Clients.ToListAsync();
+            return await _db.Doctors.Include(x => x.MedicalCarts).ToListAsync();
         }
-        //
-        // // GET
-        // public IActionResult Index()
-        // {
-        //     return View();
-        // }
     }
 }
