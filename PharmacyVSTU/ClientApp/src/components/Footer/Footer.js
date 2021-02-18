@@ -46,7 +46,7 @@ export default function Footer(props) {
               target="_blank"
               className={classes.a}
             >
-              P. Ostroukhov, A. Kosov, A. Lozhenicina, V. Rent
+              P. Ostroukhov, A. Kosov, A. Lozhenicina, V. Rent, Romic Zvezdin
             </a>
           </span>
         </p>
