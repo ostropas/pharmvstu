@@ -1,36 +1,232 @@
 FORMAT: 1A
 HOST: https://pharmvstu.azurewebsites.net/api
 
-# ostropas 
+# Sample API Documentation
+Sample api documentation for sample project.
 
-Описание всех запросов для сайта
+# Allowed HTTPs requests:
+<pre>
+PUT     : To create resource 
+POST    : Update resource
+GET     : Get a resource or list of resources
+DELETE  : To delete resource
+</pre>
 
-## Auth Methods [/auth]
+# Description Of Usual Server Responses:
+- 200 `OK` - the request was successful (some API calls may return 201 instead).
+- 201 `Created` - the request was successful and a resource was created.
+- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+- 400 `Bad Request` - the request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
+- 403 `Forbidden` - access denied.
+- 404 `Not Found` - resource was not found.
+- 405 `Method Not Allowed` - requested method is not supported for resource.
 
-### Авторизироваться [POST/signIn]
+# Group Auth
+Методы модуля авторизации/регистрации
 
+
+## Авторизация [/auth]
+### Получить токен JWT [POST]
+Авторизация пользователя 
+
++ Attributes
+    + email: test@test.ru (required, string) - почта пользователя
+    + password: stringPassword (required, string) - пароль пользователя
+    
++ Request (application/json)
+
++ Response 200 (text/plain)
+    Токен jwt
+    + body
+        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+## Регистрация [/reg]
+### Получить токен JWT [POST]
+Регистрация пользователя
+
++ Attributes
+    + email: test@test.ru (required, string) - почта пользователя
+    + password: strongPassword (required, string) - пароль пользователя
+    + fio: Иванов Иван Иванович (required, string) - фио пользователя
+    + doctor: true (required, boolean) - доктор или пациент
+    
++ Request (application/json)
+
++ Response 200 (text/plain)
+    Токен jwt
+    + body
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+# Group User
+Отображение деталей пользователя, общие для доктора и пациента
+## Данные пользователя [/user]
+### Получить данные пользователя [GET]
++ Request
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number) - идендификатор пользователя
+        + email: test@test.ru (string) - почта пользователя
+        + fio: Иванов Иван Иванович (string) - фио пользователя
+        + doctor: true (boolean) - доктор или пациент
+            
+
+# Group Doctor
+Методы модуля доктор
+## Пациенты записанные к доктору [/doctor/patients]
+### Список всех пациентов [GET]
+Получение всех пациентов записанных к доктору
++ Request
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + id: 1 (number) - идендификатор пользователя
+        + cartId: 1 (number) - номер карточки пользователя
+        + email: test@test.ru (string) - почта пользователя
+        + fio: Иванов Иван Иванович (string) - фио пользователя
+        
+    + body
+        [
+            {
+                "id": 1,
+                "cartId": 1,
+                "email": "test@test.ru",
+                "fio": "Иванов Иван Иванович"
+            },
+            {
+                "id": 2,
+                "cartId": 2,
+                "email": "test@test.ru",
+                "fio": "Сидоров Семен Семенович"
+            }
+        ]
+    
+
+
+# Group User
+Represents user details. 
+
+---
+**User attributes:**
+
+- id `(Number)` : unique identifier. 
+- fname `(String)` : First Name
+- lname `(String)` : Last Name.
+- email `(String)` : email id of the user.
+
+---
+
+## User Collection [/users(?since,limit)]
+### List all users [GET]
+Retrieve paginated list of users.
+
++ Parameters
+    + since (optional, String) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only users updated at or after this time are returned.
+    + limit (optional, Number) ... maximum number of records expected by client.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "fname": "Pandurang",
+                "lname": "Patil",
+                "email": "pandurang@email.com"
+            },
+            {
+                "id": 2,
+                "fname": "Sangram",
+                "lname": "Shinde",
+                "email": "sangram@email.com"
+            }
+        ]
+
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+
+### Create a User [PUT]
 + Request (application/json)
 
         {
-            "email": "example@test.com"
-            "password": "strongPassword"
+            "fname": "Ram",
+            "lname": "Jadhav",
+            "email": "ram@email.com"
         }
 
-+ Response 200 (text/plain)
-        
-        jwtToken
++ Response 201 (application/json)
 
-### Зарегестрироваться [POST/signUp]
+        {
+            "id": 3,
+            "fname": "Ram",
+            "lname": "Jadhav",
+            "email": "ram@email.com"
+        }
 
+## User [/users/{id}]
+A single User object with all its details
+
++ Parameters
+    + id (required, Number, `1`) ... Numeric `id` of the User to perform action with.
+
+### Retrieve a User [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            {
+                "id": 1,
+                "fname": "Pandurang",
+                "lname": "Patil",
+                "email": "pandurang@email.com"
+            }
+            
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+
+### Update a User [POST]
+Update user details
 + Request (application/json)
 
         {
-            "fio": "Иванов Иван Иванович"
-            "email": "example@test.com"
-            "password": "strongPassword"
-            "doctor": true
+            "id": 1,
+            "fname": "Pandurang",
+            "lname": "Patil",
+            "email": "pandurangpatil@email.com"
         }
 
-+ Response 200 (text/plain)
-        
-        jwtToken
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "fname": "Pandurang",
+            "lname": "Patil",
+            "email": "pandurangpatil@email.com"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+
+### Remove a User [DELETE]
++ Response 204
+
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
