@@ -2,8 +2,8 @@ import React from "react";
 
 import Cookies from 'universal-cookie';
 
-import imgSignUp from "assets/img/signup-image.jpg";
-import imgSignIn from "assets/img/signin-image.jpg";
+import imgSignUp from "assets/img/signup-image.png";
+import imgSignIn from "assets/img/signin-image.png";
 
 import axios from "../../Models/Axios/axiosRoutes.js"
 
@@ -182,8 +182,8 @@ export default class Auth extends React.Component
         <section class="sign-in vertical-center">
         <div class="container">
             <div class="signin-content">
-                <div class="signin-image">
-                    <figure><img src={imgSignIn} alt="sing up image"/></figure>
+                <div class="signin-image"  >
+                    <figure><img src={imgSignIn} style={{maxWidth:"60%"}} alt="sing up image"/></figure>
                     <a href="#" class="signup-image-link" onClick={() => this.setPage(false)}>Create an account</a>
                 </div>
 

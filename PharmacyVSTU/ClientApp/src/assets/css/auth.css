@@ -166,7 +166,8 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
   
   img {
     max-width: 100%;
-    height: auto; }
+    height: auto;
+  }
   
   figure {
     margin: 0; }
