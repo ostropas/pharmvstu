@@ -11,7 +11,7 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
-import auth from "views/Auth/Auth.js"
+import Auth from "views/Auth/Auth.js"
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
@@ -131,9 +131,7 @@ export default function Admin({ ...rest }) {
   }
   
   function returnAuthPage(params) {
-    return (
-      auth()
-    )
+    return (<Auth></Auth>);
   }
 
   let jwt = cookies.get('jwt')

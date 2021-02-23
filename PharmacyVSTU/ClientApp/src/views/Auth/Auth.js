@@ -1,101 +1,220 @@
 import React from "react";
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-// core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
+
+import Cookies from 'universal-cookie';
 
 import imgSignUp from "assets/img/signup-image.jpg";
 import imgSignIn from "assets/img/signin-image.jpg";
 
-import { useState } from 'react';
+import axios from "../../Models/Axios/axiosRoutes.js"
 
 import "assets/css/auth.css"
+import "assets/css/loader.css"
 
-function SignUpPage(setPage) {
+const cookies = new Cookies();
+
+export default class Auth extends React.Component
+{
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            pass: "",
+            rePass: "",
+            email: "",
+            signInPage: true,
+            loading: false
+        };
+      }
+
+    setPage(value)
+    {
+        this.setState({
+            signInPage: value
+        })
+    }
+
+    setName(event)
+    {
+        this.setState({
+            name: event.target.value
+        })
+    }
+
+    setPass(event)
+    {
+        this.setState({
+            pass: event.target.value
+        })
+    }
+
+    setRePass(event)
+    {
+        this.setState({
+            rePass: event.target.value
+        })
+    }
+
+    setEmail(event)
+    {
+        this.setState({
+            email: event.target.value
+        })
+    }
+
+    signIn()
+    {
+        if (this.state.loading)
+            return;
+
+        if (this.state.email === "" || this.state.pass == "")
+        {
+            alert("Enter all values")
+            return;
+        }
+
+        if (!this.validateEmail(this.state.email))
+        {
+            alert("Not valid email")
+            return;
+        }
+
+        this.setState({loading:true});
+
+        axios.signIn(this.state.email, this.state.pass).then(res => {
+            setTimeout(() => {
+                cookies.set("jwt", res.data);
+                this.setState({loading:false});
+                window.location =  "/admin"
+            }, 2000);   
+        });
+    }
+
+    validateEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    loader()
+    {
+        if(this.state.loading)
+            return(<div class="lds-roller at-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
+
+        return (<div></div>)
+    }
+
+    signUp()
+    {
+        if (this.state.loading)
+            return;
+
+        if (this.state.email === "" || this.state.pass == "" || this.state.name == "" || this.state.rePass == "")
+        {
+            alert("Enter all values")
+            return;
+        }
+
+        if (this.state.pass !== this.state.rePass)
+        {
+            alert("Passwords are not equal");
+            return;
+        }
+
+        if (!this.validateEmail(this.state.email))
+        {
+            alert("Not valid email")
+            return;
+        }
+
+        this.setState({loading:true});
+
+        axios.signUp(this.state.email, this.state.pass, this.state.name).then(res => {
+            
+            setTimeout(() => {
+                cookies.set("jwt", res.data);
+                this.setState({loading:false});
+                window.location =  "/admin"
+            }, 2000);            
+        });
+    }
+
+    SignUpPage() {
     return(
         <section class="signup vertical-center">
         <div class="container">
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="register-form">
+                    <div class="register-form" id="register-form">
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            <input type="text" name="name" id="name" placeholder="Your Name" value={this.state.name} onChange={this.setName.bind(this)}/>
                         </div>
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            <input type="email" name="email" id="email" placeholder="Your Email" value={this.state.email} onChange={this.setEmail.bind(this)} />
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            <input type="password" name="pass" id="pass" placeholder="Password"value={this.state.pass} onChange={this.setPass.bind(this)}/>
                         </div>
                         <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"value={this.state.rePass} onChange={this.setRePass.bind(this)}/>
                         </div>
                         <div class="form-group form-button">
-                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register" onClick={this.signUp.bind(this)}/>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="signup-image">
                     <figure><img src={imgSignUp} alt="sing up image" /></figure>
-                    <a href="#" class="signup-image-link" onClick={() => setPage(true)}>I am already member</a>
+                    <a href="#" class="signup-image-link" onClick={() => this.setPage(true)}>I am already member</a>
                 </div>
+                {this.loader()}
             </div>
         </div>
     </section>
     )
 }
 
-function SignInPage(setPage) {
+    SignInPage() {
     return(
         <section class="sign-in vertical-center">
         <div class="container">
             <div class="signin-content">
                 <div class="signin-image">
                     <figure><img src={imgSignIn} alt="sing up image"/></figure>
-                    <a href="#" class="signup-image-link" onClick={() => setPage(false)}>Create an account</a>
+                    <a href="#" class="signup-image-link" onClick={() => this.setPage(false)}>Create an account</a>
                 </div>
 
                 <div class="signin-form">
                     <h2 class="form-title">Sign in</h2>
-                    <form method="POST" class="register-form" id="login-form">
+                    <div class="register-form" id="login-form">
                         <div class="form-group">
                             <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                            <input type="text" name="your_name" id="your_name" value={this.state.email} onChange={this.setEmail.bind(this)} placeholder="Your Email"/>
                         </div>
                         <div class="form-group">
                             <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                            <input type="password" name="your_pass" id="your_pass" value={this.state.pass} onChange={this.setPass.bind(this)} placeholder="Password"/>
                         </div>
                         <div class="form-group form-button">
-                            <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            <input type="button" name="signin" id="signin" class="form-submit" value="Log in" onClick={this.signIn.bind(this)}/>
                         </div>
-                    </form>
+                    </div>
                 </div>
+                {this.loader()}
             </div>
         </div>
     </section>
     )
 }
 
-
-export default function Auth() {
-  const [signInPage, setPage] = useState(true)
-  let page = signInPage ? SignInPage(setPage) : SignUpPage(setPage)
-  return (
-    page
-  );
+    render()
+    {
+        let page = this.state.signInPage ? this.SignInPage() : this.SignUpPage()
+        return (
+            page
+        );      
+    }
 }

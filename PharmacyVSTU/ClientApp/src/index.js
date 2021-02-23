@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import dotenv from 'dotenv'
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
@@ -25,6 +26,8 @@ import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
+
+dotenv.config();
 
 const hist = createBrowserHistory();
 
