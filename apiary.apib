@@ -1,0 +1,36 @@
+FORMAT: 1A
+HOST: https://pharmvstu.azurewebsites.net/api
+
+# ostropas 
+
+Описание всех запросов для сайта
+
+## Auth Methods [/auth]
+
+### Авторизироваться [POST/signIn]
+
++ Request (application/json)
+
+        {
+            "email": "example@test.com"
+            "password": "strongPassword"
+        }
+
++ Response 200 (text/plain)
+        
+        jwtToken
+
+### Зарегестрироваться [POST/signUp]
+
++ Request (application/json)
+
+        {
+            "fio": "Иванов Иван Иванович"
+            "email": "example@test.com"
+            "password": "strongPassword"
+            "doctor": true
+        }
+
++ Response 200 (text/plain)
+        
+        jwtToken
