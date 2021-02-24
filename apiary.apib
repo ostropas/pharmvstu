@@ -1,26 +1,20 @@
 FORMAT: 1A
 HOST: https://pharmvstu.azurewebsites.net/api
 
-# Sample API Documentation
-Sample api documentation for sample project.
+# Pharmvstu api документация
+Описание апи поликлинники
 
-# Allowed HTTPs requests:
+# Разрешенные запросы:
 <pre>
-PUT     : To create resource 
-POST    : Update resource
-GET     : Get a resource or list of resources
-DELETE  : To delete resource
+PUT     : Создать ресурс
+POST    : Обновить ресурс
+GET     : Получить ресурс или список ресурсов
+DELETE  : Удалить ресурс
 </pre>
 
-# Description Of Usual Server Responses:
-- 200 `OK` - the request was successful (some API calls may return 201 instead).
-- 201 `Created` - the request was successful and a resource was created.
-- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
-- 400 `Bad Request` - the request could not be understood or was missing required parameters.
-- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
-- 403 `Forbidden` - access denied.
-- 404 `Not Found` - resource was not found.
-- 405 `Method Not Allowed` - requested method is not supported for resource.
+# Описание частых ответов:
+- 200 `OK` - Все ок
+- 401 `Unauthorized` - не авторизирован или нет привелегий
 
 # Group Аутентификация
 Методы модуля авторизации/регистрации
