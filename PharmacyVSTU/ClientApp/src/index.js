@@ -34,7 +34,6 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/admin" component={Admin} />
-      <Redirect path="/" to="/admin/dashboard"/>
     </Switch>
   </Router>,
   document.getElementById("root")
