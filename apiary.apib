@@ -22,7 +22,7 @@ DELETE  : To delete resource
 - 404 `Not Found` - resource was not found.
 - 405 `Method Not Allowed` - requested method is not supported for resource.
 
-# Group Auth
+# Group Аутентификация
 Методы модуля авторизации/регистрации
 
 
@@ -38,8 +38,8 @@ DELETE  : To delete resource
 
 + Response 200 (text/plain)
     Токен jwt
-    + body
-        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        + body
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
 ## Регистрация [/reg]
 ### Получить токен JWT [POST]
@@ -58,29 +58,38 @@ DELETE  : To delete resource
     + body
     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
-# Group User
+# Group Пользователь
 Отображение деталей пользователя, общие для доктора и пациента
 ## Данные пользователя [/user]
 ### Получить данные пользователя [GET]
 + Request
     + Headers
         Authentication: Bearer JWT
+        
 + Response 200 (application/json)
     + Attributes
         + id: 1 (number) - идендификатор пользователя
         + email: test@test.ru (string) - почта пользователя
         + fio: Иванов Иван Иванович (string) - фио пользователя
         + doctor: true (boolean) - доктор или пациент
+        
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
             
 
-# Group Doctor
+# Group Доктор
 Методы модуля доктор
-## Пациенты записанные к доктору [/doctor/patients]
+## Записанные пациенты [/doctor/patients]
 ### Список всех пациентов [GET]
-Получение всех пациентов записанных к доктору
+Получение всех пациентов записанных к доктору, работает только когда на сайт вошел доктор.
+В базе данных ищется доктор относительно текущего ключа JWT.
 + Request
     + Headers
         Authentication: Bearer JWT
+        
 + Response 200 (application/json)
     + Attributes
         + id: 1 (number) - идендификатор пользователя
@@ -103,128 +112,227 @@ DELETE  : To delete resource
                 "fio": "Сидоров Семен Семенович"
             }
         ]
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+        
+        
+## Список докторов [/doctor/all]
+### Список и информация о докторах [GET]
+Получение списка всех докторов и их текстового описания
++ Request
++ Response 200 (application/json)
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора
+        + fio: Иванов Иван Иванович (string) - фио врача
+        + info: Такой крутой парень (string) - описание врача
+    + body
+    [
+        {
+          "doctorId": 1,
+          "fio": "Иванов Иван Иванович",
+          "info": "Такой крутой парень"
+        },
+        {
+          "doctorId": 2,
+          "fio": "Иванов Иван Иванович",
+          "info": "Такой крутой парень"
+        }
+    ]
+
+
+## Общая информация [/doctor/info(?doctorId)]
+### Информация о докторе [GET]
+Получение текстового описания врача
++ Parameters
+    + doctorId (reqired, Number, `1`) ... Числовой идендификатор врача
     
++ Request
++ Response 200 (application/json)
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора
+        + fio: Иванов Иван Иванович (string) - фио врача
+        + info: Такой крутой парень (string) - описание врача
 
-
-# Group User
-Represents user details. 
-
----
-**User attributes:**
-
-- id `(Number)` : unique identifier. 
-- fname `(String)` : First Name
-- lname `(String)` : Last Name.
-- email `(String)` : email id of the user.
-
----
-
-## User Collection [/users(?since,limit)]
-### List all users [GET]
-Retrieve paginated list of users.
-
+### Обновление информации о докторе [PUT]
+Обновление текстового описания врача, работает только если доктор (которого мы определили с помощью jwt ключа), меняет информацию о себе
 + Parameters
-    + since (optional, String) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only users updated at or after this time are returned.
-    + limit (optional, Number) ... maximum number of records expected by client.
+    + doctorId (optional, Number, `1`) ... Числовой идендификатор врача
+    
++ Attributes
+    + fio: Иванов Иван Петрович (string) - фио врача, может измениться
+    + info: еще более крутой парень (required, string) - описание врача
 
++ Request  (application/json)
+    + Headers
+        Authentication: Bearer JWT
 + Response 200 (application/json)
-
-        [
-            {
-                "id": 1,
-                "fname": "Pandurang",
-                "lname": "Patil",
-                "email": "pandurang@email.com"
-            },
-            {
-                "id": 2,
-                "fname": "Sangram",
-                "lname": "Shinde",
-                "email": "sangram@email.com"
-            }
-        ]
-
+    + Attributes
+        + succsess: true (boolean) - удалось ли обновить информацию
 + Response 401 (application/json)
 
         {
             "error": "error.unauthorized"
         }
 
-### Create a User [PUT]
-+ Request (application/json)
-
-        {
-            "fname": "Ram",
-            "lname": "Jadhav",
-            "email": "ram@email.com"
-        }
-
-+ Response 201 (application/json)
-
-        {
-            "id": 3,
-            "fname": "Ram",
-            "lname": "Jadhav",
-            "email": "ram@email.com"
-        }
-
-## User [/users/{id}]
-A single User object with all its details
-
+## Часы приема [/doctor/workingTime(?doctorId)]
+### Получение часов приема [GET]
 + Parameters
-    + id (required, Number, `1`) ... Numeric `id` of the User to perform action with.
-
-### Retrieve a User [GET]
+    + doctorId (required, Number, `1`) ... Числовой идендификатор врача
++ Request
 + Response 200 (application/json)
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора
+        + time (string) - время работы, формат hr:mn-hr:mh, в местном времени, обеды не учитываем
+    + body
+    {
+        "doctorId": 1,
+        "time": "8:00-17:00"
+    }
 
-    + Header
 
-            X-My-Header: The Value
+### Обновление часов приема [PUT]
+Обновление текстового описания врача, работает только если доктор (которого мы определили с помощью jwt ключа), меняет информацию о себе
++ Parameters
+    + doctorId (optional, Number, `1`) ... Числовой идендификатор врача
++ Attributes
+   + time: 8:00 - 17:00 (string) - время работы, формат hr:mn-hr:mh, в местном времени, обеды не учитываем
 
-    + Body
-
-            {
-                "id": 1,
-                "fname": "Pandurang",
-                "lname": "Patil",
-                "email": "pandurang@email.com"
-            }
-            
++ Request  (application/json)
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + succsess: true (boolean) - удалось ли обновить время
 + Response 401 (application/json)
 
         {
             "error": "error.unauthorized"
         }
 
-### Update a User [POST]
-Update user details
+### Запись на прием [POST]
++ Parameters
+    + doctorId (required, Number, `1`) ... Числовой идендификатор врача
++ Request  (application/json)
+    + Headers
+        Authentication: Bearer JWT
+    + Attributes
+        + time: 8:00 (string) - время записи, формат hh:mm
++ Response 200 (application/json)
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора
+        + succsess: true (boolean) - есть ли возможность записаться на указанное время
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+
+# Group Пациент
+Методы модуля пациент
+
+## Общая информация [/patient/info]
+### Получение информации [GET]
+Получение текстового описания пациента
+
++ Request
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + patientId: 1 (number) - идендификатор пациента
+        + fio: Иванов Иван Иванович (string) - фио пациента
+        + cardId: 1 (number) - идендификатор карточки пациента
+
+### Обновление информации [PUT]
+Обновление текстового описания пациента
++ Attributes
+    + fio: Иванов Иван Петрович (string) - фио врача, может измениться
+
++ Request  (application/json)
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + succsess: true (boolean) - удалось ли обновить информацию
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+
+## Карточка пациента [/patient/card(?cardId)]
+### Получение истории болезни [GET]
+Получение списка болезней пациента из карточки, доступа или пациенту карточки или текущему лечещему врача
++ Parameters
+    + cardId (reqired, Number, `1`) ... Числовой идендификатор карточки пациента
+    
++ Request
+    + Headers
+        Authentication: Bearer JWT
++ Response 200 (application/json)
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора, который производил лечение
+        + date: 18:02:2021 (string) - дата болезни
+        + info: У меня растет 3я рука (string) - описание болезни
+        + recomendation: Отрежте её (string) - рекомендации врача
+    + body
+    [
+        {
+          "doctorId": 1,
+          "date": "18:02:2021",
+          "info": "У меня растет 3я рука",
+          "recomendation": "Отрежте её"
+        },
+        {
+          "doctorId": 1,
+          "date": "19:02:2021",
+          "info": "А теперь 2я голова",
+          "recomendation": "И её отрежте"
+        } 
+    ]
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+        
+### Добавление нового поля в историю болезни[PUT]
++ Parameters
+    + cardId (reqired, Number, `1`) ... Числовой идендификатор карточки пациента
+    
 + Request (application/json)
-
-        {
-            "id": 1,
-            "fname": "Pandurang",
-            "lname": "Patil",
-            "email": "pandurangpatil@email.com"
-        }
-
+    + Headers
+        Authentication: Bearer JWT
+    + Attributes
+        + doctorId: 1 (number) - идендификатор доктора, который производит лечение
+        + date: 18:02:2021 (string) - дата болезни
+        + info: У меня растет 3я рука (string) - описание болезни
 + Response 200 (application/json)
-
-        {
-            "id": 1,
-            "fname": "Pandurang",
-            "lname": "Patil",
-            "email": "pandurangpatil@email.com"
-        }
-
+    + Attributes
+        + succsess: true (boolean) - удалось ли добавить новое поле
 + Response 401 (application/json)
-
         {
             "error": "error.unauthorized"
         }
-
-### Remove a User [DELETE]
-+ Response 204
-
+        
+### Изменение последней записи в истории болезни[POST]
++ Parameters
+    + cardId (reqired, Number, `1`) ... Числовой идендификатор карточки пациента
+    
++ Request (application/json)
+    + Headers
+        Authentication: Bearer JWT
+    + Attributes
+    
+        + info: У меня растет 3я рука (string) - описание болезни
+        + recomendation: Отрежте её (string) - рекомендации врача
++ Response 200 (application/json)
+    + Attributes
+    
+        + succsess: true (boolean) - удалось ли обновить запись
 + Response 401 (application/json)
 
         {
