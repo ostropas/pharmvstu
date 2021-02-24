@@ -20,13 +20,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
+import registerServiceWorker from './registerServiceWorker.js';
 
 // core components
 import Admin from "layouts/Admin.js";
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 
-dotenv.config();
+registerServiceWorker();
 
 const hist = createBrowserHistory();
 
