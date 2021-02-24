@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PharmacyVSTU.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DocumentationController : BasePharmacyController
     {
         [HttpGet]

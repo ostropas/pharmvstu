@@ -6,7 +6,7 @@ using PharmacyVSTU.Models;
 namespace PharmacyVSTU.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DoctorController : BasePharmacyController
     {
         /// <summary>
