@@ -132,7 +132,7 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 cookies.set("jwt", res.data);
                 this.setState({loading:false});
-                window.location =  "/admin"
+                window.location =  "/admin/dashboard"
             }, 2000);            
         });
     }

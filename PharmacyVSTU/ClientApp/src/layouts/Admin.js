@@ -36,7 +36,7 @@ const switchRoutes = (
         );
       }
       return null;    })}
-    <Redirect from="/" to="/dashboard" />
+    <Redirect from="/" to="admin/dashboard" />
   </Switch>
 );
 
