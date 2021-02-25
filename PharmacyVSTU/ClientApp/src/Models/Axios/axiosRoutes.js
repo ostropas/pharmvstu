@@ -10,6 +10,11 @@ class Routes {
     {
         return axios.post("/reg", {email: email, password: pass, fio: fio})
     }
+
+    test()
+    {
+        return axios.get("/api/doctor/data");
+    }
 }
 
 export default new Routes;

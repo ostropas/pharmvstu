@@ -212,6 +212,7 @@ export default class Auth extends React.Component
 
     render()
     {
+        axios.test().then(r => console.log(r))
         let page = this.state.signInPage ? this.SignInPage() : this.SignUpPage()
         return (
             page

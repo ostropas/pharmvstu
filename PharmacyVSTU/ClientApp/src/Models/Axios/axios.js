@@ -7,10 +7,10 @@ const fetchClient = () => {
     var path = "";
     if (process.env.NODE_ENV === 'development')
     {
-        path = "http://localhost:8080";
+        path = "https://pharmvstu.azurewebsites.net:8080";
     } else
     {
-        path = process.env.REACT_APP_API_PATH;
+        path = "http://localhost:8080"
     }
 
   const defaultOptions = {
