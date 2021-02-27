@@ -13,9 +13,9 @@ namespace PharmacyVSTU.Models
         [Column("dateadmission")] public DateTime DateAdmission { get; set; }
         
         [Column("idclients")] public int ClientForeignKey { get; set; }
-        public Client Client { get; set; }
+        public virtual Client Client { get; set; }
         
         [Column("iddoctor")] public int DoctorForeignKey { get; set; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
     }
 }

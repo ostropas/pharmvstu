@@ -14,6 +14,6 @@ namespace PharmacyVSTU.Models
         [Column("placeresidense")] public string PlaceResidense { get; set; }
         [Column("phone")] public string Phone { get; set; }
         [Column("post")] public string Post { get; set; }
-        public List<MedicalCart> MedicalCarts { get; set; }
+        public virtual List<MedicalCart> MedicalCarts { get; set; }
     }
 }

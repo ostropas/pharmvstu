@@ -28,7 +28,7 @@ namespace PharmacyVSTU.Logger
             public void Log<TState>(LogLevel logLevel, EventId eventId, 
                 TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                var currentTime = DateTime.UtcNow.ToString();
+                 var currentTime = DateTime.UtcNow.ToString();
                 var cFormatter = logLevel == LogLevel.Error || logLevel == LogLevel.Critical ? ErrorFormat :
                 formatter; 
                 File.AppendAllText("pharmacy.log", $"Time:[{currentTime}] Level:[{logLevel}] Log:[{cFormatter(state, exception)}]\n");
