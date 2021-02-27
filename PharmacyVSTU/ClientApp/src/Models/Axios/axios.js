@@ -4,14 +4,7 @@ const cookies = new Cookies();
 
 const fetchClient = () => {
 
-    var path = "";
-    if (process.env.NODE_ENV === 'development')
-    {
-        path = "https://pharmvstu.azurewebsites.net:8080";
-    } else
-    {
-        path = "http://localhost:8080"
-    }
+    var path = "https://pharmvstu.azurewebsites.net/api";
 
   const defaultOptions = {
     baseURL: path,
