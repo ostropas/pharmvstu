@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PharmacyVSTU.Models;
 using System;
@@ -14,7 +15,7 @@ namespace PharmacyVSTU.Controllers
     /// Организует операции с данными учетки юзера
     /// </summary>
     [Authorize]
-    [Route("user")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : BasePharmacyController
     {
@@ -33,7 +34,7 @@ namespace PharmacyVSTU.Controllers
             var nameIdentifier = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
             int userId = int.Parse(nameIdentifier.Value);
 
-            User user = _db.Users.FirstOrDefault(x => x.Id == userId);
+            User user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             var userData = new
             {

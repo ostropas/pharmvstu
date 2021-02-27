@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PharmacyVSTU.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,9 +18,15 @@ namespace PharmacyVSTU.InterfaceModels
 
         [Required(ErrorMessage = "Не указан пароль")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Password { private get; set; }
 
         [Required(ErrorMessage = "Не указан флаг принадлежности доктора")]
         public bool Doctor { get; set; }
+
+        public string GetPassword()
+        {
+            return Helpers.GetHash(Password);
+        }
+         
     }
 }

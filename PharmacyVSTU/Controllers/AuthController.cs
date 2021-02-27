@@ -17,6 +17,7 @@ namespace PharmacyVSTU.Controllers
     /// <summary>
     /// Организует регистрацию/авторизацию
     /// </summary>
+    [Route("api")]
     [ApiController]
     public class AuthController : BasePharmacyController
     {
@@ -43,11 +44,11 @@ namespace PharmacyVSTU.Controllers
                     Role userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Id == intRoleKey);
 
                     // добавляем пользователя в бд
-                    _db.Users.Add(new User { Email = model.Email, Fio = model.Fio, Password = model.Password, RoleKey = userRole.Id });
+                    _db.Users.Add(new User { Email = model.Email, Fio = model.Fio, Password = model.GetPassword(), RoleKey = userRole.Id });
                     await _db.SaveChangesAsync();
 
                     // генерим токен с данными пользователя, чтоб юзер бл сразу авторизованным после регистрации
-                    var identity = GetIdentity(model.Email, model.Password);
+                    var identity = GetIdentity(model.Email, model.GetPassword());
                     string jwt = GenJWT(identity);
                     var response = new
                     {
@@ -73,10 +74,10 @@ namespace PharmacyVSTU.Controllers
         {
             if (ModelState.IsValid)
             {
-                var identity = GetIdentity(model.Email, model.Password);
+                var identity = GetIdentity(model.Email, model.GetPassword());
                 if (identity == null)
                 {
-                    return BadRequest(new { errorText = "Не найдено пользователя с таким емейлом" });
+                    return BadRequest(new { errorText = "Не верен емейл или пароль" });
                 }
 
                 string jwt = GenJWT(identity);
