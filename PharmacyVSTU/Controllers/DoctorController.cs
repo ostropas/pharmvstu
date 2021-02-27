@@ -15,9 +15,9 @@ namespace PharmacyVSTU.Controllers
         /// <returns>Авторизированный доктор</returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpGet("data")]
-        public Doctor GetCurrentDoctorInfo()
+        public string GetCurrentDoctorInfo()
         {
-            throw new NotImplementedException();
+            return "It works";
         }
 
         public DoctorController(ILogger<BasePharmacyController> logger, ApplicationContext db) : base(logger, db)

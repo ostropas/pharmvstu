@@ -22,7 +22,8 @@ export default class Auth extends React.Component
             rePass: "",
             email: "",
             signInPage: true,
-            loading: false
+            loading: false,
+            isDoctor: false
         };
       }
 
@@ -61,6 +62,13 @@ export default class Auth extends React.Component
         })
     }
 
+    setIsDoctor(event)
+    {
+        this.setState({
+            isDoctor: event.target.checked
+        })
+    }
+
     signIn()
     {
         if (this.state.loading)
@@ -82,10 +90,10 @@ export default class Auth extends React.Component
 
         axios.signIn(this.state.email, this.state.pass).then(res => {
             setTimeout(() => {
-                cookies.set("jwt", res.data);
+                localStorage.setItem("jwt", res.data);
                 this.setState({loading:false});
-                window.location =  "/admin"
-            }, 2000);   
+                window.location =  "/admin/dashboard"
+            }, 1000);   
         });
     }
 
@@ -128,9 +136,8 @@ export default class Auth extends React.Component
         this.setState({loading:true});
 
         axios.signUp(this.state.email, this.state.pass, this.state.name).then(res => {
-            
             setTimeout(() => {
-                cookies.set("jwt", res.data);
+                localStorage.setItem("jwt", res.data);
                 this.setState({loading:false});
                 window.location =  "/admin/dashboard"
             }, 2000);            
@@ -161,14 +168,18 @@ export default class Auth extends React.Component
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                             <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"value={this.state.rePass} onChange={this.setRePass.bind(this)}/>
                         </div>
+                        <div  class="form-group">
+                            <label for="check">Are you doctor?</label>
+                            <input name="check" id="check" type="checkbox" checked={this.state.isDoctor} onChange={this.setIsDoctor.bind(this)}/>
+                        </div>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Register" onClick={this.signUp.bind(this)}/>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 <div class="signup-image">
                     <figure><img src={imgSignUp} alt="sing up image" /></figure>
-                    <a href="#" class="signup-image-link" onClick={() => this.setPage(true)}>I am already member</a>
+                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(true)}>I am already member</a>
                 </div>
                 {this.loader()}
             </div>
@@ -184,7 +195,7 @@ export default class Auth extends React.Component
             <div class="signin-content">
                 <div class="signin-image"  >
                     <figure><img src={imgSignIn} style={{maxWidth:"60%"}} alt="sing up image"/></figure>
-                    <a href="#" class="signup-image-link" onClick={() => this.setPage(false)}>Create an account</a>
+                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(false)}>Create an account</a>
                 </div>
 
                 <div class="signin-form">

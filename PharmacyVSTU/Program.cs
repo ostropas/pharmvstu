@@ -17,6 +17,7 @@ namespace PharmacyVSTU
             CreateHostBuilder(args).ConfigureLogging(builder =>
             {
                 builder.ClearProviders().AddProvider(new PharmLoggerProvider());
+                builder.AddAzureWebAppDiagnostics();
             }).Build().Run();
         }
 
