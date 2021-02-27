@@ -134,8 +134,8 @@ export default function Admin({ ...rest }) {
     return (<Auth></Auth>);
   }
 
-  let jwt = cookies.get('jwt')
-  let authed = jwt !== undefined;
+  let jwt = localStorage.getItem('jwt')
+  let authed = jwt !== undefined && jwt !== "" && jwt !== null;
   let page = authed ? returnAuthed() : returnAuthPage();
   return (
     page

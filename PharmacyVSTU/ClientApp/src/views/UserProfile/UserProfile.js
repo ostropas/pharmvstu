@@ -13,67 +13,134 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/user.png";
 
-const styles = {
-  cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none"
+import axios from "Models/Axios/axiosRoutes.js"
+
+
+
+export default class UserProfile extends React.Component
+{
+  constructor(props) {
+    super(props);
+    this.state = {
+        fio: "",
+        email: "",
+        isDoctor: false,
+        info: "",
+        editData: {
+          fio: "",
+          email: "",
+          info: ""
+        },
+        updateButtonText: null
+    };
   }
-};
 
-const useStyles = makeStyles(styles);
+  styles = {
+    cardCategoryWhite: {
+      color: "rgba(255,255,255,.62)",
+      margin: "0",
+      fontSize: "14px",
+      marginTop: "0",
+      marginBottom: "0"
+    },
+    cardTitleWhite: {
+      color: "#FFFFFF",
+      marginTop: "0px",
+      minHeight: "auto",
+      fontWeight: "300",
+      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      marginBottom: "3px",
+      textDecoration: "none"
+    }
+  };
 
-export default function UserProfile() {
-  const classes = useStyles();
-  return (
-    <div>
+  componentDidMount()
+  {
+    axios.getUserData().then(res => {
+      let commonData = res.data;
+
+      let updateState = (fullData) => {
+        this.setState({
+          fio: fullData.fio,
+          isDoctor: fullData.doctor,
+          email: fullData.email,
+          info: fullData.info
+        })
+      }
+      updateState.bind(this);
+
+      if (commonData.doctor)
+      {
+        axios.getDoctorData(commonData.id).then(doctorRes => {
+          let doctorData = {...commonData, ...doctorRes.data};
+          updateState(doctorData);
+        })
+      }
+      updateState(commonData);
+    })
+  }
+
+  returnInfo(classDescription) {
+    if (this.state.info === undefined || this.state.info === "")
+      return (<div></div>)
+
+    return (
+      <p className={classDescription}>
+      {this.state.info}
+    </p>
+    )
+  }
+
+  handleChange(evt) {
+    const value = evt.target.value;
+    var editData = this.state.editData;
+    editData[evt.target.name] = value;
+    this.setState({editData: editData});
+  }
+
+  updateData() {
+    this.setState({updateButtonText: "Обновление..."});
+    let completeAction = () => {
+      this.setState({updateButtonText: "Обновлено"});
+      setTimeout(() => {
+        this.setState({updateButtonText: null});
+      }, 2000);
+    }
+
+    completeAction.bind(this)
+    if (this.state.isDoctor) {
+      axios.updateDoctorData(this.state.editData).then(res => {
+        completeAction();
+      })
+    } else {
+      axios.updatePatientData(this.state.editData).then(res =>{
+        completeAction();
+      })
+    }
+  }
+
+  render()
+  {
+    let classes = this.styles;
+    return(
+      <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Изменение профиля</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={5}>
-                  <CustomInput
-                    labelText="Company (disabled)"
-                    id="company-disabled"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      disabled: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
-                    id="username"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Email address"
+                    labelText="Email"
+                    name="email"
+                    onChange={this.handleChange.bind(this)}
                     id="email-address"
+                    name="email"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -83,71 +150,33 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="First Name"
-                    id="first-name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
+                    labelText="Фио"
+                    id="fio"
+                    name="fio"
+                    onChange={this.handleChange.bind(this)}
                     formControlProps={{
                       fullWidth: true
                     }}
                   />
                 </GridItem>
               </GridContainer>
-              <GridContainer>
+              {this.state.isDoctor ? <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="City"
-                    id="city"
+                    labelText="Описание"
+                    onChange={this.handleChange.bind(this)}
+                    id="info"
+                    name="info"                    
                     formControlProps={{
                       fullWidth: true
                     }}
+                    on
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                  <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
+              </GridContainer> : <div></div>}              
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="primary" onClick={this.updateData.bind(this)}>{this.state.updateButtonText === null ? "Обновить профиль" : this.state.updateButtonText}</Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -159,20 +188,14 @@ export default function UserProfile() {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
-              <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
+              <h4 className={classes.cardTitle}>{this.state.fio}</h4>
+              {this.state.isDoctor ? <p>Врач</p> : <p>Пациент</p>}
+              {this.returnInfo(classes.description)}
             </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
     </div>
-  );
+    )
+  }
 }

@@ -27,6 +27,8 @@ namespace PharmacyVSTU
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddCors();
             
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
@@ -79,6 +81,8 @@ namespace PharmacyVSTU
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            
+            app.UseCors(builder => builder.AllowAnyOrigin());
 
             // аутентификация/авторизация обязательно между UseRouting() и UseEndpoints()
             app.UseAuthentication();    // аутентификация

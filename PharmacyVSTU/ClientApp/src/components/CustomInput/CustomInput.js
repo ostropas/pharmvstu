@@ -20,6 +20,8 @@ export default function CustomInput(props) {
     formControlProps,
     labelText,
     id,
+    name,
+    onChange,
     labelProps,
     inputProps,
     error,
@@ -59,6 +61,8 @@ export default function CustomInput(props) {
           underline: underlineClasses
         }}
         id={id}
+        name={name}
+        onChange={onChange}
         {...inputProps}
       />
       {error ? (

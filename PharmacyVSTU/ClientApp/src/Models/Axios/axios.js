@@ -4,14 +4,7 @@ const cookies = new Cookies();
 
 const fetchClient = () => {
 
-    var path = "";
-    if (process.env.NODE_ENV === 'development')
-    {
-        path = "http://localhost:8080";
-    } else
-    {
-        path = process.env.REACT_APP_API_PATH;
-    }
+    var path = "https://pharmvstu.azurewebsites.net/api";
 
   const defaultOptions = {
     baseURL: path,
@@ -25,8 +18,8 @@ const fetchClient = () => {
 
   // Set the AUTH token for any request
   instance.interceptors.request.use(function (config) {
-    const token = cookies.get('jwt');
-    config.headers.Authorization =  token ? `Bearer ${token}` : '';
+    const token = localStorage.getItem('jwt');
+    config.headers.Authorization =  token !== null ? `Bearer ${token}` : '';
     return config;
   });
 
