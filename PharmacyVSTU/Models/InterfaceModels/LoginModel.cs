@@ -1,0 +1,24 @@
+﻿using PharmacyVSTU.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PharmacyVSTU.InterfaceModels
+{
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Не указан Email")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Не указан пароль")]
+        [DataType(DataType.Password)]
+        public string Password { private get; set; }
+
+        public string GetPassword()
+        {
+            return Helpers.GetHash(Password);
+        }
+    }
+}

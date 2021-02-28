@@ -12,6 +12,6 @@ namespace PharmacyVSTU.Models
         [Column("departmen")] public string Department { get; set; }
         [Column("post")] public string Post { get; set; }
         [Column("birthday")] public DateTime Birthday { get; set; }
-        public List<MedicalCart> MedicalCarts { get; set; }
+        public virtual List<MedicalCart> MedicalCarts { get; set; }
     }
 }
