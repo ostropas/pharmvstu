@@ -40,7 +40,7 @@ class DevAxios
 
 class Routes {
     devAxios = new DevAxios()
-    useDev = process.env.NODE_ENV === 'development' && false;
+    useDev = process.env.NODE_ENV === 'development';
 
     post(url, data, expectedResponse)
     {
@@ -120,6 +120,24 @@ class Routes {
         return this.put("/doctor/info", data, {
             "succsess": true
           })
+    }
+
+    getAllDoctors()
+    {
+        return this.get("/doctor/all", 
+            [
+                {
+                    "doctorId": 1,
+                    "fio": "Иванов Иван Иванович",
+                    "info": "Такой крутой парень"
+                },
+                {
+                    "doctorId": 2,
+                    "fio": "Иванов Иван Иванович",
+                    "info": "Такой крутой парень"
+                }
+            ]
+        )
     }
 }
 
