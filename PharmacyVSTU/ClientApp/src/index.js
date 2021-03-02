@@ -36,6 +36,8 @@ ReactDOM.render(
   <BrowserRouter history={hist} basename={baseUrl}>
     <Switch>      
       <Route path="/admin" component={Admin} />
+      <Route exact path="/api"><div></div></Route>
+      <Redirect exact path="/" to="/admin"></Redirect>
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

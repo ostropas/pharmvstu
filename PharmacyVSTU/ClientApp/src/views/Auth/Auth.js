@@ -92,7 +92,7 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data);
                 this.setState({loading:false});
-                window.location =  "/admin/dashboard"
+                window.location =  "/admin/user"
             }, 1000);   
         });
     }
@@ -139,7 +139,7 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data);
                 this.setState({loading:false});
-                window.location =  "/admin/dashboard"
+                window.location =  "/admin/user"
             }, 2000);            
         });
     }

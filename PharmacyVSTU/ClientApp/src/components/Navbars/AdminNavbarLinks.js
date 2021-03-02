@@ -56,7 +56,7 @@ export default function AdminNavbarLinks() {
   }
   const logOut = () => {
     localStorage.removeItem("jwt");
-    window.location =  "/admin/dashboard"
+    window.location =  "/admin/user"
   }
   return (
     <div>

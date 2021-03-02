@@ -35,14 +35,6 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 
 const dashboardRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin"
-  },
-  {
     path: "/user",
     name: "Профиль",
     rtlName: "ملف تعريفي للمستخدم",
