@@ -13,8 +13,9 @@ const fetchClient = () => {
   };
 
   const token = localStorage.getItem('jwt');
-  if (token !== null ? `Bearer ${token}` : '')
-    defaultOptions.headers.Authorization = token;
+  const authParam = token !== null ? `Bearer ${token}` : '';
+  if (authParam !== '')
+    defaultOptions.headers.Authorization = authParam;
 
   // Create instance
   let instance = axios.create(defaultOptions);

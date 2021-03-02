@@ -90,7 +90,7 @@ export default class Auth extends React.Component
 
         axios.signIn(this.state.email, this.state.pass).then(res => {
             setTimeout(() => {
-                localStorage.setItem("jwt", res.data);
+                localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
                 window.location =  "/admin/user"
             }, 1000);   
@@ -137,7 +137,7 @@ export default class Auth extends React.Component
 
         axios.signUp(this.state.email, this.state.pass, this.state.name).then(res => {
             setTimeout(() => {
-                localStorage.setItem("jwt", res.data);
+                localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
                 window.location =  "/admin/user"
             }, 2000);            

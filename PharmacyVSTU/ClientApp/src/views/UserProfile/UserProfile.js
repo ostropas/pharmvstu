@@ -103,9 +103,19 @@ export default class UserProfile extends React.Component
   updateData() {
     this.setState({updateButtonText: "Обновление..."});
     let completeAction = () => {
-      this.setState({updateButtonText: "Обновлено"});
+      var newFio = this.state.editData.fio === "" ? this.state.fio : this.state.editData.fio;
+      var newEmail = this.state.editData.email === "" ? this.state.email : this.state.editData.email;
+      var newInfo = this.state.editData.info === "" ? this.state.info : this.state.editData.info;
+      this.setState(
+        {updateButtonText: "Обновлено",
+          fio: newFio,
+          email: newEmail,
+          info: newInfo
+        });
       setTimeout(() => {
-        this.setState({updateButtonText: null});
+        this.setState({
+          updateButtonText: null,
+        });
       }, 2000);
     }
 
@@ -189,6 +199,7 @@ export default class UserProfile extends React.Component
             </CardAvatar>
             <CardBody profile>
               <h4 className={classes.cardTitle}>{this.state.fio}</h4>
+              <p>{this.state.email}</p>
               {this.state.isDoctor ? <p>Врач</p> : <p>Пациент</p>}
               {this.returnInfo(classes.description)}
             </CardBody>
