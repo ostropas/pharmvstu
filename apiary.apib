@@ -157,6 +157,7 @@ DELETE  : Удалить ресурс
     
 + Attributes
     + fio: Иванов Иван Петрович (string) - фио врача, может измениться
+    + email: test@test.ru (string) - email врача
     + info: еще более крутой парень (required, string) - описание врача
 
 + Request  (application/json)
@@ -243,7 +244,8 @@ DELETE  : Удалить ресурс
 ### Обновление информации [PUT]
 Обновление текстового описания пациента
 + Attributes
-    + fio: Иванов Иван Петрович (string) - фио врача, может измениться
+    + fio: Иванов Иван Петрович (string) - фио пациента, может измениться
+    + email: test@test.ru (string) - email пациента
 
 + Request  (application/json)
     + Headers
