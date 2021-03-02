@@ -9,19 +9,15 @@ const fetchClient = () => {
   const defaultOptions = {
     baseURL: path,
     headers: {
-      'Content-Type': 'application/json',
     },
   };
 
+  const token = localStorage.getItem('jwt');
+  if (token !== null ? `Bearer ${token}` : '')
+    defaultOptions.headers.Authorization = token;
+
   // Create instance
   let instance = axios.create(defaultOptions);
-
-  // Set the AUTH token for any request
-  instance.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('jwt');
-    config.headers.Authorization =  token !== null ? `Bearer ${token}` : '';
-    return config;
-  });
 
   return instance;
 };

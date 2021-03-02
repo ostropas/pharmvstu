@@ -39,21 +39,58 @@ class DevAxios
 }
 
 class Routes {
-    sender = process.env.NODE_ENV === 'development' ? new DevAxios() : axios;
+    devAxios = new DevAxios()
+    useDev = process.env.NODE_ENV === 'development' && false;
+
+    post(url, data, expectedResponse)
+    {
+        if (this.useDev)
+        {
+            return this.devAxios.post(url, data, expectedResponse);
+        }
+        else
+        {
+            return axios.post(url, data)
+        }
+    }
+
+
+    put(url, data, expectedResponse)
+    {
+        if (this.useDev)
+        {
+            return this.devAxios.put(url, data, expectedResponse);
+        }
+        else
+        {
+            return axios.put(url, data)
+        }
+    }
+    get(url, expectedResponse)
+    {
+        if (this.useDev)
+        {
+            return this.devAxios.get(url, expectedResponse);
+        }
+        else
+        {
+            return axios.get(url)
+        }
+    }
 
     signIn(email, pass)
     {
-        return this.sender.post("/auth", {email: email, password: pass}, "jwttoken")
+        return this.post("/auth", {email: email, password: pass}, "jwttoken")
     }
 
     signUp(email, pass, fio, isDoctor)
     {
-        return this.sender.post("/reg", {email: email, password: pass, fio: fio, doctor:isDoctor}, "jwttoken")
+        return this.post("/reg", {email: email, password: pass, fio: fio, doctor:isDoctor}, "jwttoken")
     }
 
     getUserData()
     {
-        return this.sender.get("/user", {
+        return this.get("/user", {
             "id": 1,
             "email": "test@test.ru",
             "fio": "Иванов Иван Иванович",
@@ -63,7 +100,7 @@ class Routes {
 
     getDoctorData(doctorId)
     {
-        return this.sender.get(`/doctor/info?doctorId=${doctorId}`, {
+        return this.get(`/doctor/info?doctorId=${doctorId}`, {
             "doctorId": 1,
             "fio": "Иванов Иван Иванович",
             "info": "Такой крутой парень"
@@ -72,7 +109,7 @@ class Routes {
 
     updatePatientData(data)
     {
-        return this.sender.put("/patient/info", data, {
+        return this.put("/patient/info", data, {
             "succsess": true
           })
     }
@@ -80,7 +117,7 @@ class Routes {
 
     updateDoctorData(data)
     {
-        return this.sender.put("/doctor/info", data, {
+        return this.put("/doctor/info", data, {
             "succsess": true
           })
     }
