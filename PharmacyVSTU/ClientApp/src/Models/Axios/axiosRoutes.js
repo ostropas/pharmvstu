@@ -139,6 +139,39 @@ class Routes {
             ]
         )
     }
+
+    getWorkingTime(doctorId)
+    {
+        return this.get(`doctor/workingTime?doctorId=${doctorId}`, {
+            workingTime: [
+            {
+                "day": 1,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 2,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 3,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 4,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 5,
+                "start": "08:00",
+                "end": "17:00"
+            }
+        ]
+    })
+    }
 }
 
 export default new Routes;

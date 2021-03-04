@@ -46,45 +46,45 @@ class DoctorPage extends React.Component
     constructor(props)
     {
         super(props);
-        console.log(props);
         this.state = {
-            doctors: [
+            doctorId: props.location.state.doctorId,
+            doctorFio: "",
+            doctorInfo: "",
+            workingTime: [
                 {
-                    id: "",
-                    fio: "",
-                    info: ""
+                    day: 1,
+                    start: "08:00",
+                    end: "17:00"
                 }
             ]
         }
     }
 
+    dayNames = [
+        "", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
+    ]
+
     componentDidMount()
     {
-        this.loadDoctors();
-    }
-
-    loadDoctors()
-    {
-        axios.getAllDoctors().then(res => {
+        axios.getDoctorData(this.state.doctorId).then(res => {
             this.setState({
-                doctors: res.data
+                doctorFio: res.data.fio,
+                doctorInfo: res.data.info
+            })
+        });
+
+        axios.getWorkingTime(this.state.doctorId).then(res => {
+            this.setState({
+                workingTime: res.data.workingTime
             })
         })
     }
 
-    openDoctor(doctorIndex)
+    renderWorkingTIme()
     {
-        this.props.history.push({
-           pathname: "/admin/doctor",
-           state: {doctorId: doctorIndex}
-        });
-    }
-
-    renderDoctors()
-    {
-        let head = ["Фио", "Инфо"];
-        let data = this.state.doctors.map(v => {
-            return [v.fio, v.info]
+        let head = ["День недели", "Начало", "Конец"];
+        let data = this.state.workingTime.map(v => {
+            return [this.dayNames[v.day], v.start, v.end]
         });
 
         return(
@@ -92,8 +92,7 @@ class DoctorPage extends React.Component
             tableHeaderColor="primary"
             tableHead={head}
             tableData={data}
-            onClick={this.openDoctor.bind(this)}
-            style={{cursor: "pointer"}}
+            onClick={() => {}}
             />
         )
     }
@@ -106,13 +105,12 @@ class DoctorPage extends React.Component
             <GridItem xs={12} sm={12} md={12}>
                 <Card>
                 <CardHeader color="primary">
-                    <h4 className={classes.cardTitleWhite}>Все врачи</h4>
-                    <p className={classes.cardCategoryWhite}>
-                    Описание всех врачей клинники
-                    </p>
+                    <h4 className={classes.cardTitleWhite}>{this.state.doctorFio}</h4>
                 </CardHeader>
                 <CardBody>
-                    {this.renderDoctors()}
+                    {this.state.doctorInfo}
+                    <h4>Время приема:</h4>
+                    {this.renderWorkingTIme()}
                 </CardBody>
                 </Card>
             </GridItem>

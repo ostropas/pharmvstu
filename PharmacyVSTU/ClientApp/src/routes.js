@@ -22,16 +22,14 @@ const dashboardRoutes = [
     name: "Профиль",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
-    component: UserProfile,
-    layout: "/admin"
+    component: UserProfile
   },
   {
     path: "/doctors",
     name: "Список всех докторов",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
-    component: DoctorList,
-    layout: "/admin"
+    component: DoctorList
   },
   {
     path: "/doctor",
@@ -39,32 +37,28 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: DoctorPage,
-    dontShowInSelector: true,
-    layout: "/admin"
+    dontShowInSelector: true
   },
   {
     path: "/typography",
     name: "Typography",
     rtlName: "طباعة",
     icon: LibraryBooks,
-    component: Typography,
-    layout: "/admin"
+    component: Typography
   },
   {
     path: "/icons",
     name: "Icons",
     rtlName: "الرموز",
     icon: BubbleChart,
-    component: Icons,
-    layout: "/admin"
+    component: Icons
   },
   {
     path: "/notifications",
     name: "Notifications",
     rtlName: "إخطارات",
     icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
+    component: NotificationsPage
   }
 ];
 

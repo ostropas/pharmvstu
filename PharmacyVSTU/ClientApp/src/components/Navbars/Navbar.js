@@ -23,7 +23,7 @@ export default function Header(props) {
   function makeBrand() {
     var name;
     props.routes.map(prop => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      if (window.location.pathname === prop.path) {
         name = props.rtlActive ? prop.rtlName : prop.name;
       }
       return null;

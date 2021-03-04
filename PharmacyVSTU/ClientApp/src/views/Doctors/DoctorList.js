@@ -74,8 +74,8 @@ class DoctorList extends React.Component
     openDoctor(doctorIndex)
     {
         this.props.history.push({
-           pathname: "/admin/doctor",
-           state: {doctorId: this.state.doctors[doctorIndex].id}
+           pathname: "/doctor",
+           state: {doctorId: this.state.doctors[doctorIndex].doctorId}
         });
     }
 

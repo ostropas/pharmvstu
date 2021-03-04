@@ -32,14 +32,14 @@ export default function Sidebar(props) {
         var activePro = " ";
         var listItemClasses;
           listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
+            [" " + classes[color]]: activeRoute(prop.path)
           });
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
+          [" " + classes.whiteFont]: activeRoute(prop.path)
         });
         return (
           <NavLink
-            to={prop.layout + prop.path}
+            to={prop.path}
             className={activePro + classes.item}
             activeClassName="active"
             key={key}
@@ -75,8 +75,7 @@ export default function Sidebar(props) {
   );
   var brand = (
     <div className={classes.logo}>
-      <a
-        href="admin"
+      <div
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}
@@ -86,7 +85,7 @@ export default function Sidebar(props) {
           <img src={logo} alt="logo" className={classes.img} />
         </div>
         {logoText}
-      </a>
+      </div>
     </div>
   );
   return (
