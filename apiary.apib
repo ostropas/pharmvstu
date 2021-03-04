@@ -179,12 +179,38 @@ DELETE  : Удалить ресурс
 + Request
 + Response 200 (application/json)
     + Attributes
-        + doctorId: 1 (number) - идендификатор доктора
-        + time (string) - время работы, формат hr:mn-hr:mh, в местном времени, обеды не учитываем
+        + day: 1 (number) - день недели (1 - понедельник)
+        + start (string) - начало работы, формат hr:mn-hr:mh, в местном времени, часовые пояса не учитываем
+        + end (string) - конец работы, формат hr:mn-hr:mh, в местном времени, часовые пояса не учитываем
     + body
     {
-        "doctorId": 1,
-        "time": "8:00-17:00"
+        workingTime: [
+            {
+                "day": 1,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 2,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 3,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 4,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 5,
+                "start": "08:00",
+                "end": "17:00"
+            }
+        ]
     }
 
 
@@ -193,11 +219,43 @@ DELETE  : Удалить ресурс
 + Parameters
     + doctorId (optional, Number, `1`) ... Числовой идендификатор врача
 + Attributes
-   + time: 8:00 - 17:00 (string) - время работы, формат hr:mn-hr:mh, в местном времени, обеды не учитываем
+    + day: 1 (number) - день недели (1 - понедельник)
+    + start (string) - начало работы, формат hr:mn-hr:mh, в местном времени, часовые пояса не учитываем
+    + end (string) - конец работы, формат hr:mn-hr:mh, в местном времени, часовые пояса не учитываем
 
 + Request  (application/json)
     + Headers
         Authentication: Bearer JWT
+    + body
+    {
+        workingTime: [
+            {
+                "day": 1,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 2,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 3,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 4,
+                "start": "08:00",
+                "end": "17:00"
+            },
+            {
+                "day": 5,
+                "start": "08:00",
+                "end": "17:00"
+            }
+        ]
+    }
 + Response 200 (application/json)
     + Attributes
         + succsess: true (boolean) - удалось ли обновить время
@@ -207,14 +265,27 @@ DELETE  : Удалить ресурс
             "error": "error.unauthorized"
         }
 
-### Запись на прием [POST]
+
+        
+## Запись на прием [/doctor/appointment(?doctorId)]
+### Получить доступное для записи время [GET]
++ Parameters
+    + doctorId (required, Number, `1`) ... Числовой идендификатор врача
++ Request  (application/json)
++ Response 200 (application/json)
+    + Attributes
+        + tine: 1 (number) - unix epoch time, время с 1970
+    + body
+    [1614833984, 1614833984, 1614833984]
+
+### Сделать запись [POST]
 + Parameters
     + doctorId (required, Number, `1`) ... Числовой идендификатор врача
 + Request  (application/json)
     + Headers
         Authentication: Bearer JWT
     + Attributes
-        + time: 8:00 (string) - время записи, формат hh:mm
+        + time: 1614833984 (number) - unix epoch time, время с 1970
 + Response 200 (application/json)
     + Attributes
         + doctorId: 1 (number) - идендификатор доктора
