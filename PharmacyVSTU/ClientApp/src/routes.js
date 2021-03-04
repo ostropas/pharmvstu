@@ -9,8 +9,8 @@ import Unarchive from "@material-ui/icons/Unarchive";
 import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
 import DoctorList from "views/Doctors/DoctorList.js";
+import DoctorPage from "views/Doctor/DoctorPage.js";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
@@ -26,7 +26,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/table",
+    path: "/doctors",
     name: "Список всех докторов",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
@@ -38,7 +38,7 @@ const dashboardRoutes = [
     name: "Описание доктора",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
-    component: DoctorList,
+    component: DoctorPage,
     dontShowInSelector: true,
     layout: "/admin"
   },

@@ -11,7 +11,6 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
-import Auth from "views/Auth/Auth.js"
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
@@ -19,6 +18,8 @@ import bgImage from "assets/img/sidebar-1.jpg";
 import logo from "assets/img/hospital-icon.png";
 
 import Cookies from 'universal-cookie';
+import { useHistory } from "react-router-dom";
+
 const cookies = new Cookies();
 
 let ps;
@@ -45,6 +46,7 @@ const switchRoutes = (
 const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
+  const history = useHistory();
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -129,15 +131,15 @@ export default function Admin({ ...rest }) {
     </div>
     )
   }
-  
-  function returnAuthPage(params) {
-    return (<Auth></Auth>);
-  }
 
   let jwt = localStorage.getItem('jwt')
   let authed = jwt !== undefined && jwt !== "" && jwt !== null;
-  let page = authed ? returnAuthed() : returnAuthPage();
+  if (!authed)
+    history.push({pathname:"/auth"});
+
+    
+  // let page = authed ? returnAuthed() : returnAuthPage();
   return (
-    page
+    returnAuthed()
   );
 }

@@ -15,6 +15,7 @@ const cookies = new Cookies();
 export default class Auth extends React.Component
 {
     constructor(props) {
+        console.log(props);
         super(props);
         this.state = {
             name: "",
@@ -92,7 +93,7 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
-                window.location =  "/admin/user"
+                this.props.history.push({pathname: "/admin/user"});
             }, 1000);   
         });
     }
@@ -139,14 +140,15 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
-                window.location =  "/admin/user"
-            }, 2000);            
+                this.props.history.push({pathname: "/admin/user"});
+            }, 1000);            
         });
     }
 
     SignUpPage() {
+    var classes = this.state.loading ? "signup vertical-center hide" : "signup vertical-center";
     return(
-        <section class="signup vertical-center">
+        <section className={classes}>
         <div class="container">
             <div class="signup-content">
                 <div class="signup-form">
@@ -181,17 +183,18 @@ export default class Auth extends React.Component
                     <figure><img src={imgSignUp} alt="sing up image" /></figure>
                     <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(true)}>I am already member</a>
                 </div>
-                {this.loader()}
             </div>
         </div>
+        {this.loader()}
     </section>
     )
 }
 
     SignInPage() {
+    var classes = this.state.loading ? "container hide" : "container";
     return(
         <section class="sign-in vertical-center">
-        <div class="container">
+        <div className={classes}>
             <div class="signin-content">
                 <div class="signin-image"  >
                     <figure><img src={imgSignIn} style={{maxWidth:"60%"}} alt="sing up image"/></figure>
@@ -214,9 +217,9 @@ export default class Auth extends React.Component
                         </div>
                     </div>
                 </div>
-                {this.loader()}
             </div>
         </div>
+        {this.loader()}
     </section>
     )
 }

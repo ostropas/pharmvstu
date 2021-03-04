@@ -22,12 +22,14 @@ import Button from "components/CustomButtons/Button.js";
 import Cookies from 'universal-cookie';
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
+import { useHistory } from "react-router-dom";
 
 const cookies = new Cookies();
 
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
+  const history = useHistory();
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -56,7 +58,7 @@ export default function AdminNavbarLinks() {
   }
   const logOut = () => {
     localStorage.removeItem("jwt");
-    window.location =  "/admin/user"
+    history.push("/auth");
   }
   return (
     <div>

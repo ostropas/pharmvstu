@@ -24,6 +24,7 @@ import registerServiceWorker from './registerServiceWorker.js';
 
 // core components
 import Admin from "layouts/Admin.js";
+import Auth from "views/Auth/Auth.js"
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 
@@ -36,6 +37,7 @@ ReactDOM.render(
   <BrowserRouter history={hist} basename={baseUrl}>
     <Switch>      
       <Route path="/admin" component={Admin} />
+      <Route path="/auth" component={Auth}/>
       <Route exact path="/api"><div></div></Route>
       <Redirect exact path="/" to="/admin"></Redirect>
     </Switch>

@@ -440,7 +440,9 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         left: 20%;
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
+        transition: opacity 1.5s;
       }
+      
   
   label.valid {
     display: block;
@@ -537,6 +539,17 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     margin-left: 110px;
     margin-right: 20px;
     margin-top: 10px; }
+
+
+  .container.hide {
+    opacity: 0.2;
+    pointer-events:none;
+  }
+
+  .container{
+    opacity: 1;
+    transition: opacity 1.5s;
+  }
   
   @media screen and (max-width: 1200px) {
     .container {

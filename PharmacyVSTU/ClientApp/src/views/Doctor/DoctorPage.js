@@ -41,11 +41,12 @@ const styles = {
     }
 };
 
-class DoctorList extends React.Component
+class DoctorPage extends React.Component
 {
     constructor(props)
     {
         super(props);
+        console.log(props);
         this.state = {
             doctors: [
                 {
@@ -75,7 +76,7 @@ class DoctorList extends React.Component
     {
         this.props.history.push({
            pathname: "/admin/doctor",
-           state: {doctorId: this.state.doctors[doctorIndex].id}
+           state: {doctorId: doctorIndex}
         });
     }
 
@@ -120,8 +121,8 @@ class DoctorList extends React.Component
     }
 }
 
-DoctorList.propTypes = {
+DoctorPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DoctorList);
+export default withStyles(styles)(DoctorPage);
