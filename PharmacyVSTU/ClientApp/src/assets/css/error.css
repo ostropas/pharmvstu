@@ -1,0 +1,21 @@
+.footer-error {
+    position: absolute;
+    bottom: -10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    content: '';
+    transition: all 0.5s;
+    color: white;
+    font-style: bolt;
+    background: rgb(246 80 70);
+    text-align: center;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.hide {
+    bottom: -50px;
+}

@@ -16,6 +16,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import avatar from "assets/img/faces/user.png";
 
 import axios from "Models/Axios/axiosRoutes.js"
+import ErrorComponent from "components/Error/ErrorComponent.js"
 
 
 
@@ -33,7 +34,8 @@ export default class UserProfile extends React.Component
           email: "",
           info: ""
         },
-        updateButtonText: null
+        updateButtonText: null,
+        error: ""
     };
   }
 
@@ -55,6 +57,26 @@ export default class UserProfile extends React.Component
       textDecoration: "none"
     }
   };
+
+
+    sendError(msg)
+    {
+        this.setState({
+            error: msg
+        });
+    }
+
+    removeError()
+    {
+        this.setState({
+            error:""
+        })
+    }
+
+    renderError()
+    {
+        return (<ErrorComponent removeError={this.removeError.bind(this)}>{this.state.error}</ErrorComponent>);
+    }
 
   componentDidMount()
   {
@@ -93,6 +115,11 @@ export default class UserProfile extends React.Component
     )
   }
 
+  shouldComponentUpdate(nextProps)
+  {
+    return true;
+  }
+
   handleChange(evt) {
     const value = evt.target.value;
     var editData = this.state.editData;
@@ -123,10 +150,16 @@ export default class UserProfile extends React.Component
     if (this.state.isDoctor) {
       axios.updateDoctorData(this.state.editData).then(res => {
         completeAction();
+      }).catch(e => {
+        completeAction();
+        this.sendError("Что-то пошло не так");
       })
     } else {
       axios.updatePatientData(this.state.editData).then(res =>{
         completeAction();
+      }).catch(e => {
+        completeAction();
+        this.sendError("Что-то пошло не так");
       })
     }
   }
@@ -206,6 +239,7 @@ export default class UserProfile extends React.Component
           </Card>
         </GridItem>
       </GridContainer>
+      {this.renderError()}
     </div>
     )
   }

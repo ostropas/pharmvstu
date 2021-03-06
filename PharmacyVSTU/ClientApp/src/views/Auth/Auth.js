@@ -7,6 +7,8 @@ import imgSignIn from "assets/img/signin-image.png";
 
 import axios from "../../Models/Axios/axiosRoutes.js"
 
+import ErrorComponent from "components/Error/ErrorComponent.js"
+
 import "assets/css/auth.css"
 import "assets/css/loader.css"
 
@@ -15,7 +17,6 @@ const cookies = new Cookies();
 export default class Auth extends React.Component
 {
     constructor(props) {
-        console.log(props);
         super(props);
         this.state = {
             name: "",
@@ -24,49 +25,35 @@ export default class Auth extends React.Component
             email: "",
             signInPage: true,
             loading: false,
-            isDoctor: false
+            isDoctor: false,
+            error: ""
         };
       }
 
     setPage(value)
     {
-        this.setState({
-            signInPage: value
-        })
+        this.setState({ signInPage: value })
     }
 
-    setName(event)
-    {
-        this.setState({
-            name: event.target.value
-        })
-    }
-
-    setPass(event)
-    {
-        this.setState({
-            pass: event.target.value
-        })
-    }
-
-    setRePass(event)
-    {
-        this.setState({
-            rePass: event.target.value
-        })
-    }
-
-    setEmail(event)
-    {
-        this.setState({
-            email: event.target.value
-        })
-    }
 
     setIsDoctor(event)
     {
         this.setState({
             isDoctor: event.target.checked
+        })
+    }
+
+    sendError(msg)
+    {
+        this.setState({
+            error: msg
+        });
+    }
+
+    removeError()
+    {
+        this.setState({
+            error:""
         })
     }
 
@@ -77,13 +64,13 @@ export default class Auth extends React.Component
 
         if (this.state.email === "" || this.state.pass == "")
         {
-            alert("Enter all values")
+            this.sendError("Введите все значения");
             return;
         }
 
         if (!this.validateEmail(this.state.email))
         {
-            alert("Not valid email")
+            this.sendError("Не корректный email")
             return;
         }
 
@@ -93,8 +80,11 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
-                this.props.history.push({pathname: "/admin/user"});
+                this.props.history.push({pathname: "/user"});
             }, 1000);   
+        }).catch(e => {
+            this.setState({loading:false});
+            this.sendError("Не корректный email или пароль");
         });
     }
 
@@ -118,19 +108,19 @@ export default class Auth extends React.Component
 
         if (this.state.email === "" || this.state.pass == "" || this.state.name == "" || this.state.rePass == "")
         {
-            alert("Enter all values")
+            this.sendError("Введите все значения");
             return;
         }
 
         if (this.state.pass !== this.state.rePass)
         {
-            alert("Passwords are not equal");
+            alert("Пароли не совпадают")
             return;
         }
 
         if (!this.validateEmail(this.state.email))
         {
-            alert("Not valid email")
+            this.sendError("Не корректный email")
             return;
         }
 
@@ -140,9 +130,18 @@ export default class Auth extends React.Component
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
                 this.setState({loading:false});
-                this.props.history.push({pathname: "/admin/user"});
+                this.props.history.push({pathname: "/user"});
             }, 1000);            
+        }).catch(e => {
+            this.setState({loading:false});
+            this.sendError("Не корректный email или пароль");
         });
+    }
+
+
+    handleChange(evt) {
+        const value = evt.target.value;
+        this.setState({[evt.target.name]: value});
     }
 
     SignUpPage() {
@@ -152,37 +151,38 @@ export default class Auth extends React.Component
         <div class="container">
             <div class="signup-content">
                 <div class="signup-form">
-                    <h2 class="form-title">Sign up</h2>
+                    <h2 class="form-title">Регистрация</h2>
                     <div class="register-form" id="register-form">
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Your Name" value={this.state.name} onChange={this.setName.bind(this)}/>
+                            <input type="text" name="name" id="name" placeholder="Ваше ФИО" value={this.state.name} onChange={this.handleChange.bind(this)}/>
                         </div>
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email" value={this.state.email} onChange={this.setEmail.bind(this)} />
+                            <input type="email" name="email" id="email" placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)} />
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Password"value={this.state.pass} onChange={this.setPass.bind(this)}/>
+                            <input type="password" name="pass" id="pass" placeholder="Павроль"value={this.state.pass} onChange={this.handleChange.bind(this)}/>
                         </div>
                         <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"value={this.state.rePass} onChange={this.setRePass.bind(this)}/>
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Повторите пароль"value={this.state.rePass} onChange={this.handleChange.bind(this)}/>
                         </div>
-                        <div  class="form-group">
-                            <label for="check">Are you doctor?</label>
+                        <div  class="form-group" style={{overflow:"initial"}}>
+                            <label for="check">Вы доктор?</label>
                             <input name="check" id="check" type="checkbox" checked={this.state.isDoctor} onChange={this.setIsDoctor.bind(this)}/>
                         </div>
                         <div class="form-group form-button">
-                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register" onClick={this.signUp.bind(this)}/>
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Зарегестрироваться" onClick={this.signUp.bind(this)}/>
                         </div>                        
                     </div>
                 </div>
                 <div class="signup-image">
                     <figure><img src={imgSignUp} alt="sing up image" /></figure>
-                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(true)}>I am already member</a>
+                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(true)}>Я уже зарегистрирован</a>
                 </div>
+                {this.renderError()}
             </div>
         </div>
         {this.loader()}
@@ -198,31 +198,36 @@ export default class Auth extends React.Component
             <div class="signin-content">
                 <div class="signin-image"  >
                     <figure><img src={imgSignIn} style={{maxWidth:"60%"}} alt="sing up image"/></figure>
-                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(false)}>Create an account</a>
+                    <a class="signup-image-link" style={{cursor:"pointer"}} onClick={() => this.setPage(false)}>Создать профиль</a>
                 </div>
-
                 <div class="signin-form">
-                    <h2 class="form-title">Sign in</h2>
+                    <h2 class="form-title">Вход</h2>
                     <div class="register-form" id="login-form">
                         <div class="form-group">
                             <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="your_name" id="your_name" value={this.state.email} onChange={this.setEmail.bind(this)} placeholder="Your Email"/>
+                            <input type="text" name="email" id="your_name" value={this.state.email} onChange={this.handleChange.bind(this)} placeholder="Email"/>
                         </div>
                         <div class="form-group">
                             <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="your_pass" id="your_pass" value={this.state.pass} onChange={this.setPass.bind(this)} placeholder="Password"/>
+                            <input type="password" name="pass" id="your_pass" value={this.state.pass} onChange={this.handleChange.bind(this)} placeholder="Пароль"/>
                         </div>
                         <div class="form-group form-button">
-                            <input type="button" name="signin" id="signin" class="form-submit" value="Log in" onClick={this.signIn.bind(this)}/>
+                            <input type="button" name="signin" id="signin" class="form-submit" value="Войти" onClick={this.signIn.bind(this)}/>
                         </div>
                     </div>
                 </div>
+                {this.renderError()}
             </div>
         </div>
         {this.loader()}
     </section>
     )
 }
+
+    renderError()
+    {
+        return (<ErrorComponent removeError={this.removeError.bind(this)}>{this.state.error}</ErrorComponent>);
+    }
 
     render()
     {
