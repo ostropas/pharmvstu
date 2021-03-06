@@ -114,7 +114,6 @@ class Routes {
           })
     }
 
-
     updateDoctorData(data)
     {
         return this.put("/doctor/info", data, {
@@ -186,13 +185,13 @@ class Routes {
             [
                 {
                     "id": 1,
-                    "cartId": 1,
+                    "cardId": 1,
                     "email": "test@test.ru",
                     "fio": "Иванов Иван Иванович"
                 },
                 {
                     "id": 2,
-                    "cartId": 2,
+                    "cardId": 2,
                     "email": "test@test.ru",
                     "fio": "Сидоров Семен Семенович"
                 }
@@ -202,7 +201,7 @@ class Routes {
 
     getCard(cardId)
     {
-        return this.get(`/patient/card?cartId${cardId}`, 
+        return this.get(`/patient/card?cartId=${cardId}`, 
         [
             {
                 "doctorId": 1,
@@ -218,6 +217,13 @@ class Routes {
             }
         ]
     )
+    }
+
+    updateLastCardRecord(cardId, data)
+    {
+        return this.post(`/patient/card?cardId=${cardId}`, data, {
+            "succsess": true
+        })
     }
 }
 

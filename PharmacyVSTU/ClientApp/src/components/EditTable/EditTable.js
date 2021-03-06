@@ -22,7 +22,7 @@ export default function CustomTable(props) {
   }
   
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, onClick, style } = props;
+  const { tableHead, tableData, tableHeaderColor, editFilter, style } = props;
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -45,11 +45,11 @@ export default function CustomTable(props) {
         <TableBody>
           {tableData.map((prop, keyRow) => {
             return (
-              <TableRow style={style} key={keyRow} className={classes.tableBodyRow} onClick={() => onClick(keyRow)}>
+              <TableRow style={style} key={keyRow} className={classes.tableBodyRow}>
                 {prop.map((prop, keyColumn) => {
                   return (
                     <TableCell className={classes.tableCell} key={keyColumn}>
-                        {keyColumn === 0 ? prop : <Input value={prop} onChange={(e) => props.onChange(e, keyRow, keyColumn)}></Input> }
+                        {!editFilter(keyRow, keyColumn) ? prop : <Input value={prop} onChange={(e) => props.onChange(e, keyRow, keyColumn)}></Input> }
                     </TableCell>
                   );
                 })}

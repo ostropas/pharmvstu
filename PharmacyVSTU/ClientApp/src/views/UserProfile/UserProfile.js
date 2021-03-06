@@ -216,7 +216,12 @@ class UserProfile extends React.Component
           tableHeaderColor="primary"
           tableHead={head}
           tableData={data}
-          onClick={() => {}}
+          editFilter={(row, column) => {
+              if (column > 0)
+                return true;
+            
+                return false;
+          }}
           onChange={(res, row, column) => {
             var oldTableData = this.state.editData.workingTime;
             if (column === 1)

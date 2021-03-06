@@ -12,6 +12,7 @@ import UserProfile from "views/UserProfile/UserProfile.js";
 import DoctorList from "views/Doctors/DoctorList.js";
 import DoctorPage from "views/Doctor/DoctorPage.js";
 import PatientsList from "views/PatientsList/PatientsList.js";
+import PatientCard from "views/PatientCard/PatientCard.js";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
@@ -26,7 +27,6 @@ const dashboardRoutes = [
   {
     path: "/user",
     name: "Профиль",
-    rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
     user: 2
@@ -34,7 +34,6 @@ const dashboardRoutes = [
   {
     path: "/doctors",
     name: "Список всех докторов",
-    rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: DoctorList,
     user: 1
@@ -42,21 +41,24 @@ const dashboardRoutes = [
   {
     path: "/doctor",
     name: "Описание доктора",
-    rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: DoctorPage,
-    dontShowInSelector: true,
     user: 3
   },
   {
     path: "/patients",
     name: "Список записанных пациентов",
-    rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: PatientsList,
-    dontShowInSelector: true,
     user: 0
-  }
+  },
+  {
+    path: "/patientCard",
+    name: "История болезни",
+    icon: "content_paste",
+    component: PatientCard,
+    user: 3
+  },
 ];
 
 export default dashboardRoutes;

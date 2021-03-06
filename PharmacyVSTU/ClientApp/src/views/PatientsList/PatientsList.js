@@ -1,4 +1,3 @@
-
 import React from "react";
 // @material-ui/core components
 import { withStyles } from "@material-ui/core/styles";
@@ -77,7 +76,7 @@ class PatientsList extends React.Component
     {
         this.props.history.push({
            pathname: "/patientCard",
-           state: {cardId: this.state.patients[patientIndex].cardId}
+           state: {patient: this.state.patients[patientIndex]}
         });
     }
 
