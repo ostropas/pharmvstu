@@ -13,9 +13,7 @@ import DoctorList from "views/Doctors/DoctorList.js";
 import DoctorPage from "views/Doctor/DoctorPage.js";
 import PatientsList from "views/PatientsList/PatientsList.js";
 import PatientCard from "views/PatientCard/PatientCard.js";
-import Typography from "views/Typography/Typography.js";
-import Icons from "views/Icons/Icons.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
+import Card from "views/Card/Card.js"
 // core components/views for RTL layout
 
 // 0 - doctor
@@ -59,6 +57,13 @@ const dashboardRoutes = [
     component: PatientCard,
     user: 3
   },
+  {
+    path: "/card",
+    name: "История болезни",
+    icon: BubbleChart,
+    component: Card,
+    user: 1
+  }
 ];
 
 export default dashboardRoutes;

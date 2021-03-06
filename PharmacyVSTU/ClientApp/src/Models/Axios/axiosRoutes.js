@@ -132,7 +132,7 @@ class Routes {
                 },
                 {
                     "doctorId": 2,
-                    "fio": "Иванов Иван Иванович",
+                    "fio": "Семенов Иван Иванович",
                     "info": "Такой крутой парень"
                 }
             ]
@@ -205,13 +205,13 @@ class Routes {
         [
             {
                 "doctorId": 1,
-                "date": "18:02:2021",
+                "date": 1614863984,
                 "info": "У меня растет 3я рука",
                 "recomendation": "Отрежте её"
             },
             {
                 "doctorId": 1,
-                "date": "19:02:2021",
+                "date": 1614863984,
                 "info": "А теперь 2я голова",
                 "recomendation": "И её отрежте"
             }
@@ -222,6 +222,31 @@ class Routes {
     updateLastCardRecord(cardId, data)
     {
         return this.post(`/patient/card?cardId=${cardId}`, data, {
+            "succsess": true
+        })
+    }
+
+    getPatientData()
+    {
+        return this.get("/patient/info", {
+              "patientId": 1,
+                "fio": "Иванов Иван Иванович",
+                "cardId": 1
+        })
+    }
+
+    getDoctorAppointment(doctorId)
+    {
+        return this.get(`/doctor/appointment?doctorId=${doctorId}`, [
+            1614863984,
+            1614893984,
+            1614833984
+        ]);
+    }
+
+    addNewFieldInCard(cardId, data)
+    {
+        return this.put(`/patient/card?=${cardId}`, data, {
             "succsess": true
         })
     }
