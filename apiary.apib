@@ -278,24 +278,6 @@ DELETE  : Удалить ресурс
     + body
     [1614833984, 1614833984, 1614833984]
 
-### Сделать запись [POST]
-+ Parameters
-    + doctorId (required, Number, `1`) ... Числовой идендификатор врача
-+ Request  (application/json)
-    + Headers
-        Authentication: Bearer JWT
-    + Attributes
-        + time: 1614833984 (number) - unix epoch time, время с 1970
-+ Response 200 (application/json)
-    + Attributes
-        + doctorId: 1 (number) - идендификатор доктора
-        + succsess: true (boolean) - есть ли возможность записаться на указанное время
-+ Response 401 (application/json)
-
-        {
-            "error": "error.unauthorized"
-        }
-
 # Group Пациент
 Методы модуля пациент
 
@@ -375,7 +357,7 @@ DELETE  : Удалить ресурс
         Authentication: Bearer JWT
     + Attributes
         + doctorId: 1 (number) - идендификатор доктора, который производит лечение
-        + date: 18:02:2021 (string) - дата болезни
+        + date: 1614833984 (number) - дата болезни
         + info: У меня растет 3я рука (string) - описание болезни
 + Response 200 (application/json)
     + Attributes
