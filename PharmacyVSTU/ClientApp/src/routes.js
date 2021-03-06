@@ -11,10 +11,16 @@ import Language from "@material-ui/icons/Language";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import DoctorList from "views/Doctors/DoctorList.js";
 import DoctorPage from "views/Doctor/DoctorPage.js";
+import PatientsList from "views/PatientsList/PatientsList.js";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
+
+// 0 - doctor
+// 1 - patient
+// 2 - both
+// 3 - never
 
 const dashboardRoutes = [
   {
@@ -22,14 +28,16 @@ const dashboardRoutes = [
     name: "Профиль",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
-    component: UserProfile
+    component: UserProfile,
+    user: 2
   },
   {
     path: "/doctors",
     name: "Список всех докторов",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
-    component: DoctorList
+    component: DoctorList,
+    user: 1
   },
   {
     path: "/doctor",
@@ -37,28 +45,17 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: DoctorPage,
-    dontShowInSelector: true
+    dontShowInSelector: true,
+    user: 3
   },
   {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: LibraryBooks,
-    component: Typography
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    rtlName: "الرموز",
-    icon: BubbleChart,
-    component: Icons
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    rtlName: "إخطارات",
-    icon: Notifications,
-    component: NotificationsPage
+    path: "/patients",
+    name: "Список записанных пациентов",
+    rtlName: "قائمة الجدول",
+    icon: "content_paste",
+    component: PatientsList,
+    dontShowInSelector: true,
+    user: 0
   }
 ];
 

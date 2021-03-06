@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useState} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -26,9 +26,23 @@ export default function Sidebar(props) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
   const { color, logo, image, logoText, routes } = props;
+  const isDoctor = localStorage.getItem("doctor") === "true";
+  const filteredRoutes = routes.filter(x => {
+    if (x.user === 2)
+      return true;
+
+    if (x.user === 1 && !isDoctor)
+      return true;
+
+    if (x.user === 0 && isDoctor)
+      return true;
+
+    return false;
+  });
+  console.log(filteredRoutes)
   var links = (
     <List className={classes.list}>
-      {routes.filter(v => v.dontShowInSelector !== true).map((prop, key) => {
+      {filteredRoutes.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
           listItemClasses = classNames({

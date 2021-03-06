@@ -80,12 +80,12 @@ class Routes {
 
     signIn(email, pass)
     {
-        return this.post("/auth", {email: email, password: pass}, "jwttoken")
+        return this.post("/auth", {email: email, password: pass}, {access_token: "jwttoken"})
     }
 
     signUp(email, pass, fio, isDoctor)
     {
-        return this.post("/reg", {email: email, password: pass, fio: fio, doctor:isDoctor}, "jwttoken")
+        return this.post("/reg", {email: email, password: pass, fio: fio, doctor:isDoctor}, {access_token: "jwttoken"})
     }
 
     getUserData()
@@ -178,6 +178,46 @@ class Routes {
         return this.put(`doctor/workingTime`, data, {
             succsess: "true"
         })
+    }
+
+    getAllActualPatients()
+    {
+        return this.get("/doctor/patients", 
+            [
+                {
+                    "id": 1,
+                    "cartId": 1,
+                    "email": "test@test.ru",
+                    "fio": "Иванов Иван Иванович"
+                },
+                {
+                    "id": 2,
+                    "cartId": 2,
+                    "email": "test@test.ru",
+                    "fio": "Сидоров Семен Семенович"
+                }
+            ]
+        )
+    }
+
+    getCard(cardId)
+    {
+        return this.get(`/patient/card?cartId${cardId}`, 
+        [
+            {
+                "doctorId": 1,
+                "date": "18:02:2021",
+                "info": "У меня растет 3я рука",
+                "recomendation": "Отрежте её"
+            },
+            {
+                "doctorId": 1,
+                "date": "19:02:2021",
+                "info": "А теперь 2я голова",
+                "recomendation": "И её отрежте"
+            }
+        ]
+    )
     }
 }
 

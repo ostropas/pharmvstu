@@ -79,8 +79,11 @@ export default class Auth extends React.Component
         axios.signIn(this.state.email, this.state.pass).then(res => {
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
-                this.setState({loading:false});
-                this.props.history.push({pathname: "/user"});
+                axios.getUserData().then(uRes => {
+                    localStorage.setItem("doctor", uRes.data.doctor);
+                    this.setState({loading:false});
+                    this.props.history.push({pathname: "/user"});
+                })
             }, 1000);   
         }).catch(e => {
             this.setState({loading:false});
@@ -126,9 +129,10 @@ export default class Auth extends React.Component
 
         this.setState({loading:true});
 
-        axios.signUp(this.state.email, this.state.pass, this.state.name).then(res => {
+        axios.signUp(this.state.email, this.state.pass, this.state.name, this.state.isDoctor).then(res => {
             setTimeout(() => {
                 localStorage.setItem("jwt", res.data.access_token);
+                localStorage.setItem("doctor", this.state.isDoctor);
                 this.setState({loading:false});
                 this.props.history.push({pathname: "/user"});
             }, 1000);            
