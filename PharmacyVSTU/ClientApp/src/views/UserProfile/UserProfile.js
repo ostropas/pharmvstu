@@ -249,11 +249,9 @@ class UserProfile extends React.Component
           <GridItem xs={12} sm={12} md={12}>
               <Card>
               <CardHeader color="primary">
-                  <h4 className={classes.cardTitleWhite}>{this.state.doctorFio}</h4>
+                  <h4 className={classes.cardTitleWhite}>Время приема</h4>
               </CardHeader>
               <CardBody>
-                  {this.state.doctorInfo}
-                  <h4>Время приема:</h4>
                   {this.renderWorkingTIme()}
               </CardBody>
               </Card>
