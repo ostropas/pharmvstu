@@ -1,3 +1,4 @@
+
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -14,6 +15,12 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
+
+  const onChange = (event) => {
+
+    console.log(event.target.value)
+  }
+  
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor, onClick, style } = props;
   return (
@@ -36,13 +43,13 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
-          {tableData.map((prop, key) => {
+          {tableData.map((prop, keyRow) => {
             return (
-              <TableRow style={style} key={key} className={classes.tableBodyRow} onClick={() => onClick(key)}>
-                {prop.map((prop, key) => {
+              <TableRow style={style} key={keyRow} className={classes.tableBodyRow} onClick={() => onClick(keyRow)}>
+                {prop.map((prop, keyColumn) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key}>
-                      {prop}
+                    <TableCell className={classes.tableCell} key={keyColumn}>
+                        {keyColumn === 0 ? prop : <Input value={prop} onChange={(e) => props.onChange(e, keyRow, keyColumn)}></Input> }
                     </TableCell>
                   );
                 })}

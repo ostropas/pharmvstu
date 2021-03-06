@@ -5,6 +5,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import EditTable from "components/EditTable/EditTable.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
@@ -13,18 +14,49 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import { withStyles } from "@material-ui/core/styles";
 import avatar from "assets/img/faces/user.png";
 
 import axios from "Models/Axios/axiosRoutes.js"
 import ErrorComponent from "components/Error/ErrorComponent.js"
 
 
+const styles = {
+    cardCategoryWhite: {
+        "&,& a,& a:hover,& a:focus": {
+        color: "rgba(255,255,255,.62)",
+        margin: "0",
+        fontSize: "14px",
+        marginTop: "0",
+        marginBottom: "0"
+        },
+        "& a,& a:hover,& a:focus": {
+        color: "#FFFFFF"
+        }
+    },
+    cardTitleWhite: {
+        color: "#FFFFFF",
+        marginTop: "0px",
+        minHeight: "auto",
+        fontWeight: "300",
+        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+        marginBottom: "3px",
+        textDecoration: "none",
+        "& small": {
+        color: "#777",
+        fontSize: "65%",
+        fontWeight: "400",
+        lineHeight: "1"
+        }
+    }
+};
 
-export default class UserProfile extends React.Component
+class UserProfile extends React.Component
 {
   constructor(props) {
     super(props);
     this.state = {
+        id: "",
         fio: "",
         email: "",
         isDoctor: false,
@@ -32,32 +64,24 @@ export default class UserProfile extends React.Component
         editData: {
           fio: "",
           email: "",
-          info: ""
+          info: "",
+          workingTime: [
+            {
+                day: 1,
+                start: "08:00",
+                end: "17:00"
+            },
+            {
+                day: 1,
+                start: "08:00",
+                end: "17:00"
+            }
+          ]
         },
         updateButtonText: null,
         error: ""
     };
   }
-
-  styles = {
-    cardCategoryWhite: {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
-    },
-    cardTitleWhite: {
-      color: "#FFFFFF",
-      marginTop: "0px",
-      minHeight: "auto",
-      fontWeight: "300",
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-      marginBottom: "3px",
-      textDecoration: "none"
-    }
-  };
-
 
     sendError(msg)
     {
@@ -85,6 +109,7 @@ export default class UserProfile extends React.Component
 
       let updateState = (fullData) => {
         this.setState({
+          id: fullData.id,
           fio: fullData.fio,
           isDoctor: fullData.doctor,
           email: fullData.email,
@@ -98,6 +123,12 @@ export default class UserProfile extends React.Component
         axios.getDoctorData(commonData.id).then(doctorRes => {
           let doctorData = {...commonData, ...doctorRes.data};
           updateState(doctorData);
+          axios.getWorkingTime(commonData.id).then(workingTimeRes => {
+            console.log(workingTimeRes);
+            var editData = this.state.editData;
+            editData.workingTime = workingTimeRes.data.workingTime;
+            this.setState({editData:editData});
+          })
         })
       }
       updateState(commonData);
@@ -113,11 +144,6 @@ export default class UserProfile extends React.Component
       {this.state.info}
     </p>
     )
-  }
-
-  shouldComponentUpdate(nextProps)
-  {
-    return true;
   }
 
   handleChange(evt) {
@@ -146,16 +172,26 @@ export default class UserProfile extends React.Component
       }, 2000);
     }
 
+    var newEditData = {
+      fio: this.state.editData.fio,
+      email: this.state.editData.email,
+      info: this.state.editData.info
+    }
     completeAction.bind(this)
     if (this.state.isDoctor) {
-      axios.updateDoctorData(this.state.editData).then(res => {
-        completeAction();
+      axios.updateDoctorData(newEditData).then(res => {
+        axios.updateWorkingTime({workingTime: this.state.editData.workingTime}).then(res => {
+          completeAction();
+        }).catch(e => {
+          completeAction();
+          this.sendError("Что-то пошло не так");
+        })
       }).catch(e => {
         completeAction();
         this.sendError("Что-то пошло не так");
       })
     } else {
-      axios.updatePatientData(this.state.editData).then(res =>{
+      axios.updatePatientData(newEditData).then(res =>{
         completeAction();
       }).catch(e => {
         completeAction();
@@ -164,9 +200,65 @@ export default class UserProfile extends React.Component
     }
   }
 
+  dayNames = [
+      "", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
+  ]
+
+  renderWorkingTIme()
+  {
+      let head = ["День недели", "Начало", "Конец"];
+      let data = this.state.editData.workingTime.map(v => {
+          return [this.dayNames[v.day], v.start, v.end]
+      });
+
+      return(
+          <EditTable
+          tableHeaderColor="primary"
+          tableHead={head}
+          tableData={data}
+          onClick={() => {}}
+          onChange={(res, row, column) => {
+            var oldTableData = this.state.editData.workingTime;
+            if (column === 1)
+            {
+              oldTableData[row].start = res.target.value;
+            }
+            else {
+              oldTableData[row].end = res.target.value;
+            }
+            var editData = this.state.editData;
+            editData.workingTime = oldTableData;
+            this.setState({editData: editData});
+          }}
+          />
+      )
+  }
+
+  renderEditDoctorWorkingTime()
+  {
+    if (!this.state.isDoctor)
+      return (<div></div>)
+
+      const { classes } = this.props;
+      return (
+          <GridItem xs={12} sm={12} md={12}>
+              <Card>
+              <CardHeader color="primary">
+                  <h4 className={classes.cardTitleWhite}>{this.state.doctorFio}</h4>
+              </CardHeader>
+              <CardBody>
+                  {this.state.doctorInfo}
+                  <h4>Время приема:</h4>
+                  {this.renderWorkingTIme()}
+              </CardBody>
+              </Card>
+          </GridItem>
+      )
+  }
+
   render()
   {
-    let classes = this.styles;
+    const { classes } = this.props;
     return(
       <div>
       <GridContainer>
@@ -238,9 +330,12 @@ export default class UserProfile extends React.Component
             </CardBody>
           </Card>
         </GridItem>
+        {this.renderEditDoctorWorkingTime()}
       </GridContainer>
       {this.renderError()}
     </div>
     )
   }
 }
+
+export default withStyles(styles)(UserProfile);

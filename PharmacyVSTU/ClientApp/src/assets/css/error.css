@@ -1,6 +1,7 @@
 .footer-error {
-    position: absolute;
-    bottom: -10px;
+    z-index: 1;
+    position: fixed;
+    bottom: -5px;
     padding-left: 10px;
     padding-top: 10px;
     content: '';
@@ -14,8 +15,10 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    opacity: 1;
 }
 
 .hide {
-    bottom: -50px;
+    opacity: 0;
+    bottom: -25px;
 }

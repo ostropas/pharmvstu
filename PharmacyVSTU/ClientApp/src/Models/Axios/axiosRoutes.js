@@ -172,6 +172,13 @@ class Routes {
         ]
     })
     }
+
+    updateWorkingTime(data)
+    {
+        return this.put(`doctor/workingTime`, data, {
+            succsess: "true"
+        })
+    }
 }
 
 export default new Routes;
