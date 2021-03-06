@@ -58,7 +58,7 @@ class PatientCard extends React.Component
                 recomendation: ""
             }],
             updateButtonText: null,
-            error: null
+            error: ""
         }
     }
 

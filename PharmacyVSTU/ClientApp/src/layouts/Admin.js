@@ -117,7 +117,7 @@ export default function Admin({ ...rest }) {
                   unmountOnExit
                 >
                   <div className="page">
-                    <Component />
+                    <Component {...rest}/>
                   </div>
                 </CSSTransition>
               )}
