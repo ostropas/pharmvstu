@@ -18,25 +18,13 @@ import bgImage from "assets/img/sidebar-1.jpg";
 import logo from "assets/img/hospital-icon.png";
 
 import Cookies from 'universal-cookie';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import "assets/css/pageTranslation.css"
 
 const cookies = new Cookies();
 
 let ps;
-
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
-        return (
-          <Route
-            path={prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-       })}
-  </Switch>
-);
 
 
 
@@ -44,6 +32,7 @@ const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
   const history = useHistory();
+  const location = useLocation();
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -115,15 +104,51 @@ export default function Admin({ ...rest }) {
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
           <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
+            <div className={classes.container}>
+
+            {routes.map(({ path, Component }) => (
+            <Route key={path} exact path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={300}
+                  classNames="page"
+                  unmountOnExit
+                >
+                  <div className="page">
+                    <Component />
+                  </div>
+                </CSSTransition>
+              )}
+            </Route>
+          ))}
+            {/* <SwitchTransition mode="in-out">
+          <CSSTransition
+            key={location}
+            addEndListener={(node, done) => {
+              node.addEventListener("transitionend", done, false);
+            }}
+            timeout={300}
+            classNames="fade"
+          >
+              <Switch location={location}>
+              {routes.map((prop, key) => {
+                  return (
+                    <Route
+                      path={prop.path}
+                      component={prop.component}
+                      key={key}
+                    />
+                  );
+                })}
+            </Switch>
+            </CSSTransition>
+            </SwitchTransition> */}
+
+              </div>
           </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
+        <Footer />
       </div>
     </div>
     )

@@ -26,42 +26,42 @@ const dashboardRoutes = [
     path: "/user",
     name: "Профиль",
     icon: Person,
-    component: UserProfile,
+    Component: UserProfile,
     user: 2
   },
   {
     path: "/doctors",
     name: "Список всех докторов",
     icon: "content_paste",
-    component: DoctorList,
+    Component: DoctorList,
     user: 1
   },
   {
     path: "/doctor",
     name: "Описание доктора",
     icon: "content_paste",
-    component: DoctorPage,
+    Component: DoctorPage,
     user: 3
   },
   {
     path: "/patients",
     name: "Список записанных пациентов",
     icon: "content_paste",
-    component: PatientsList,
+    Component: PatientsList,
     user: 0
   },
   {
     path: "/patientCard",
     name: "История болезни",
     icon: "content_paste",
-    component: PatientCard,
+    Component: PatientCard,
     user: 3
   },
   {
     path: "/card",
     name: "История болезни",
     icon: BubbleChart,
-    component: Card,
+    Component: Card,
     user: 1
   }
 ];
