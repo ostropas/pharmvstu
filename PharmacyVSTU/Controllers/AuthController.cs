@@ -26,7 +26,7 @@ namespace PharmacyVSTU.Controllers
         }
 
         /// <summary>
-        /// Экшон регистрации
+        /// Регистрация
         /// </summary>
         [Route("reg")]
         [HttpPost]
@@ -39,12 +39,44 @@ namespace PharmacyVSTU.Controllers
                 if (user == null)
                 {
                     // ищем роль
-                    RolesScroll roleKey = model.Doctor == true ? RolesScroll.Doctor : RolesScroll.Client;
+                    RolesScroll roleKey = model.Doctor == true ? RolesScroll.Doctor : RolesScroll.Patient;
                     int intRoleKey = (int)roleKey;
                     Role userRole = await _db.Roles.FirstOrDefaultAsync(r => r.Id == intRoleKey);
 
                     // добавляем пользователя в бд
-                    _db.Users.Add(new User { Email = model.Email, Fio = model.Fio, Password = model.GetPassword(), RoleKey = userRole.Id });
+                    User newUser = new User() { Email = model.Email, Fio = model.Fio, Password = model.GetPassword(), RoleKey = userRole.Id };
+                    _db.Users.Add(newUser);
+                    await _db.SaveChangesAsync();
+
+                    // добавляем врача или пациента
+                    switch (roleKey)
+                    {
+                        case RolesScroll.Doctor:
+
+                            Doctor newDoctor = new Doctor() { User = newUser};
+                            _db.Doctors.Add(newDoctor);
+
+                            // Jcjeifi fiwwdmccp, cmwicw98jc __dee9c0+ckei ncdjnj
+                            for(int i = 1; i <= 5; i++)
+                            {
+                                DoctorWorkingTime newWorkingDay = new DoctorWorkingTime()
+                                {
+                                    Start = "08:00",
+                                    End = "20:00",
+                                    Doctor = newDoctor,
+                                    WeekdayNumber = i,
+                                };
+                                _db.DoctorWorkingTimes.Add(newWorkingDay);
+                            }
+
+                            break;
+
+                        case RolesScroll.Patient:
+
+                            Patient newPatient = new Patient() { User = newUser };
+                            _db.Patients.Add(newPatient);
+                            break;
+                    }
                     await _db.SaveChangesAsync();
 
                     // генерим токен с данными пользователя, чтоб юзер бл сразу авторизованным после регистрации
