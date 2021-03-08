@@ -57,7 +57,7 @@ namespace PharmacyVSTU.Controllers
                             _db.Doctors.Add(newDoctor);
 
                             // Jcjeifi fiwwdmccp, cmwicw98jc __dee9c0+ckei ncdjnj
-                            for(int i = 0; i < 5; i++)
+                            for(int i = 1; i <= 5; i++)
                             {
                                 DoctorWorkingTime newWorkingDay = new DoctorWorkingTime()
                                 {
