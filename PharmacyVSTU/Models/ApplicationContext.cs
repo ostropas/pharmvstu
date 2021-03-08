@@ -4,13 +4,13 @@ namespace PharmacyVSTU.Models
 {
     public class ApplicationContext : DbContext
     {
-
-        public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<MedicalCart> MedicalCarts { get; set; }
-        public DbSet<Medicament> Medicaments { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<DoctorWorkingTime> DoctorWorkingTimes { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<DeseaseCardRecord> DeseaseCards { get; set; }
+        
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
@@ -25,29 +25,31 @@ namespace PharmacyVSTU.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                modelBuilder.Entity<Client>().
-                    ToTable("clients");
-
-                modelBuilder.Entity<Doctor>()
-                    .ToTable("doctor");
-                
-                modelBuilder.Entity<MedicalCart>()
-                    .ToTable("medicalcart")
-                    .HasOne(x => x.Client)
-                    .WithMany(x => x.MedicalCarts)
-                    .HasForeignKey(x => x.ClientForeignKey).
-                    HasPrincipalKey(x => x.Id);
-                
-                modelBuilder.Entity<MedicalCart>()
-                    .HasOne(x => x.Doctor)
-                    .WithMany(x => x.MedicalCarts)
-                    .HasForeignKey(x => x.DoctorForeignKey).
-                    HasPrincipalKey(x => x.Id);
-
             modelBuilder.Entity<User>()
             .HasOne(p => p.Role)
             .WithMany(t => t.Users)
             .HasForeignKey(p => p.RoleKey);
+
+            modelBuilder.Entity<Doctor>()
+            .HasOne(p => p.User);
+
+            modelBuilder.Entity<Patient>()
+            .HasOne(p => p.User);
+
+            modelBuilder.Entity<DoctorWorkingTime>()
+            .HasOne(p => p.Doctor)
+            .WithMany(t => t.DoctorWorkingTimes)
+            .HasForeignKey(p => p.DoctorKey);
+
+            modelBuilder.Entity<DeseaseCardRecord>()
+            .HasOne(p => p.Patient)
+            .WithMany(t => t.DeseaseCardRecords)
+            .HasForeignKey(p => p.PatientKey);
+
+            modelBuilder.Entity<DeseaseCardRecord>()
+            .HasOne(p => p.Doctor)
+            .WithMany(t => t.DeseaseCardRecords)
+            .HasForeignKey(p => p.DoctorKey);
 
             // Предзаполняем таблицы, такие как роли и т.п. при создании бд
             Prefill(modelBuilder);

@@ -22,6 +22,6 @@ namespace PharmacyVSTU.Models
     public enum RolesScroll
     {
         Doctor = 1,
-        Client = 2
+        Patient = 2
     }
 }

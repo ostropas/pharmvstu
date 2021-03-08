@@ -19,7 +19,7 @@ namespace PharmacyVSTU.Controllers
     [ApiController]
     public class UserController : BasePharmacyController
     {
-        public UserController(ILogger<BasePharmacyController> logger, ApplicationContext db) : base(logger, db)
+        public UserController(ILogger<UserController> logger, ApplicationContext db) : base(logger, db)
         {
         }
 
