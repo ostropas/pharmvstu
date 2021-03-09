@@ -39,7 +39,6 @@ export default function Sidebar(props) {
 
     return false;
   });
-  console.log(filteredRoutes)
   var links = (
     <List className={classes.list}>
       {filteredRoutes.map((prop, key) => {

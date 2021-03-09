@@ -23,8 +23,6 @@ class ErrorComponent extends React.Component {
         if (this.state.text === nextProps.children)
             return true;           
 
-        console.log(this.state);
-        console.log(nextProps);
         this.setState({
             text: nextProps.children,
             show: !this.state.show

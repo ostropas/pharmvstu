@@ -124,7 +124,6 @@ class UserProfile extends React.Component
           let doctorData = {...commonData, ...doctorRes.data};
           updateState(doctorData);
           axios.getWorkingTime(commonData.id).then(workingTimeRes => {
-            console.log(workingTimeRes);
             var editData = this.state.editData;
             editData.workingTime = workingTimeRes.data;
             this.setState({editData:editData});
@@ -223,6 +222,10 @@ class UserProfile extends React.Component
                 return false;
           }}
           onChange={(res, row, column) => {
+            const re = new RegExp("^([0-9]|0[0-9]|1[0-9]|2[0-3])?(:([0|3]|[0|3][0])?)?$");
+            if (!re.test(res.target.value))
+              return;
+
             var oldTableData = this.state.editData.workingTime;
             if (column === 1)
             {
