@@ -126,7 +126,7 @@ class UserProfile extends React.Component
           axios.getWorkingTime(commonData.id).then(workingTimeRes => {
             console.log(workingTimeRes);
             var editData = this.state.editData;
-            editData.workingTime = workingTimeRes.data.workingTime;
+            editData.workingTime = workingTimeRes.data;
             this.setState({editData:editData});
           })
         })

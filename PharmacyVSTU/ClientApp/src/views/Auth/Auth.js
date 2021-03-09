@@ -167,11 +167,11 @@ export default class Auth extends React.Component
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Павроль"value={this.state.pass} onChange={this.handleChange.bind(this)}/>
+                            <input type="password" name="pass" id="pass" placeholder="Пароль"value={this.state.pass} onChange={this.handleChange.bind(this)}/>
                         </div>
                         <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Повторите пароль"value={this.state.rePass} onChange={this.handleChange.bind(this)}/>
+                            <input type="password" name="rePass" id="re_pass" placeholder="Повторите пароль"value={this.state.rePass} onChange={this.handleChange.bind(this)}/>
                         </div>
                         <div  class="form-group" style={{overflow:"initial"}}>
                             <label for="check">Вы доктор?</label>

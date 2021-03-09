@@ -75,7 +75,7 @@ class DoctorPage extends React.Component
 
         axios.getWorkingTime(this.state.doctorId).then(res => {
             this.setState({
-                workingTime: res.data.workingTime
+                workingTime: res.data
             })
         })
     }

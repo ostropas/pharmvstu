@@ -40,7 +40,7 @@ class DevAxios
 
 class Routes {
     devAxios = new DevAxios()
-    useDev = process.env.NODE_ENV === 'development';
+    useDev = process.env.NODE_ENV === 'development' && false;
 
     post(url, data, expectedResponse)
     {
@@ -201,7 +201,7 @@ class Routes {
 
     getCard(cardId)
     {
-        return this.get(`/patient/card?cartId=${cardId}`, 
+        return this.get(`/patient/card?cardId=${cardId}`, 
         [
             {
                 "doctorId": 1,
@@ -246,7 +246,7 @@ class Routes {
 
     addNewFieldInCard(cardId, data)
     {
-        return this.put(`/patient/card?=${cardId}`, data, {
+        return this.put(`/patient/card?cardId=${cardId}`, data, {
             "succsess": true
         })
     }
