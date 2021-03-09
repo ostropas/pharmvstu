@@ -149,10 +149,10 @@ export default class Auth extends React.Component
     }
 
     SignUpPage() {
-    var classes = this.state.loading ? "signup vertical-center hide" : "signup vertical-center";
+    var classes = this.state.loading ? "container hide" : "container";
     return(
-        <section className={classes}>
-        <div class="container">
+        <section className="signup vertical-center">
+        <div className={classes}>
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Регистрация</h2>

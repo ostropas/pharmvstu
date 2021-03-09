@@ -206,7 +206,9 @@ class UserProfile extends React.Component
   renderWorkingTIme()
   {
       let head = ["День недели", "Начало", "Конец"];
-      let data = this.state.editData.workingTime.map(v => {
+      let data = this.state.editData.workingTime.sort(function(a) {
+        return a.day;
+      }).map(v => {
           return [this.dayNames[v.day], v.start, v.end]
       });
 
