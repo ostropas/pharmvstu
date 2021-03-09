@@ -215,10 +215,13 @@ namespace PharmacyVSTU.Controllers
                     WeekdayNumber = workingDay.Day,
                 };
 
+                DoctorWorkingTime workingTime = _db.DoctorWorkingTimes.FirstOrDefault(x => x.WeekdayNumber == newWorkingDay.WeekdayNumber && x.Doctor.Id == newWorkingDay.Doctor.Id);
+
                 // Если создаваемый день есть уже в бд, то обновляем, иначе создаем новый
-                if (_db.DoctorWorkingTimes.Any(x => x.WeekdayNumber == newWorkingDay.WeekdayNumber && x.Doctor.Id == newWorkingDay.Doctor.Id))
+                if (workingTime != null)
                 {
-                    _db.DoctorWorkingTimes.Update(newWorkingDay);
+                    workingTime.Start = newWorkingDay.Start;
+                    workingTime.End = newWorkingDay.End;
                 }
                 else
                 {
