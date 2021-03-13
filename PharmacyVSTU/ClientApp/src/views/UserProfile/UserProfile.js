@@ -65,18 +65,7 @@ class UserProfile extends React.Component
           fio: "",
           email: "",
           info: "",
-          workingTime: [
-            {
-                day: 1,
-                start: "08:00",
-                end: "17:00"
-            },
-            {
-                day: 1,
-                start: "08:00",
-                end: "17:00"
-            }
-          ]
+          workingTime: []
         },
         updateButtonText: null,
         error: ""
@@ -120,14 +109,14 @@ class UserProfile extends React.Component
 
       if (commonData.doctor)
       {
+        axios.getWorkingTime(commonData.id).then(workingTimeRes => {
+          var editData = this.state.editData;
+          editData.workingTime = workingTimeRes.data;
+          this.setState({editData:editData});
+        })
         axios.getDoctorData(commonData.id).then(doctorRes => {
           let doctorData = {...commonData, ...doctorRes.data};
           updateState(doctorData);
-          axios.getWorkingTime(commonData.id).then(workingTimeRes => {
-            var editData = this.state.editData;
-            editData.workingTime = workingTimeRes.data;
-            this.setState({editData:editData});
-          })
         })
       }
       updateState(commonData);
@@ -246,7 +235,7 @@ class UserProfile extends React.Component
 
   renderEditDoctorWorkingTime()
   {
-    if (!this.state.isDoctor)
+    if (!this.state.isDoctor || this.state.editData.workingTime.length == 0)
       return (<div></div>)
 
       const { classes } = this.props;
