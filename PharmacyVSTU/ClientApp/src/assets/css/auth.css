@@ -559,6 +559,10 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     .container {
       max-width: 1200px; } }
   @media screen and (max-width: 768px) {
+    .vertical-center {
+      position:inherit;
+      transform: none;
+    }
     .signup-content, .signin-content {
       flex-direction: column;
       -moz-flex-direction: column;
