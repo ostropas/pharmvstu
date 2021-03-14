@@ -42,6 +42,17 @@ class Routes {
     devAxios = new DevAxios()
     useDev = process.env.NODE_ENV === 'development' && false;
 
+    addJwtToken(token)
+    {
+        localStorage.setItem("jwt", token);
+        axios.defaults.headers.Authorization = `Bearer ${token}`;
+    }
+
+    clearJwtToken()
+    {
+        localStorage.removeItem("jwt");
+    }
+
     post(url, data, expectedResponse)
     {
         if (this.useDev)

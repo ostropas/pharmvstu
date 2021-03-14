@@ -23,6 +23,7 @@ import Cookies from 'universal-cookie';
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 import { useHistory } from "react-router-dom";
+import axios from "../../Models/Axios/axiosRoutes.js"
 
 const cookies = new Cookies();
 
@@ -57,7 +58,7 @@ export default function AdminNavbarLinks() {
 
   }
   const logOut = () => {
-    localStorage.removeItem("jwt");
+    axios.clearJwtToken();
     history.push("/auth");
   }
   return (

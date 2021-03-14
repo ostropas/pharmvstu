@@ -77,13 +77,11 @@ export default class Auth extends React.Component
         this.setState({loading:true});
 
         axios.signIn(this.state.email, this.state.pass).then(res => {
-            setTimeout(() => {
-                localStorage.setItem("jwt", res.data.access_token);
-                axios.getUserData().then(uRes => {
-                    localStorage.setItem("doctor", uRes.data.doctor);
-                    this.props.history.push({pathname: "/user"});
-                })
-            }, 3000);   
+            axios.addJwtToken(res.data.access_token);
+            axios.getUserData().then(uRes => {
+                localStorage.setItem("doctor", uRes.data.doctor);
+                this.props.history.push({pathname: "/user"});
+            })
         }).catch(e => {
             this.setState({loading:false});
             this.sendError("Не корректный email или пароль");
@@ -129,11 +127,9 @@ export default class Auth extends React.Component
         this.setState({loading:true});
 
         axios.signUp(this.state.email, this.state.pass, this.state.name, this.state.isDoctor).then(res => {
-            setTimeout(() => {
-                localStorage.setItem("jwt", res.data.access_token);
-                localStorage.setItem("doctor", this.state.isDoctor);
-                this.props.history.push({pathname: "/user"});
-            }, 3000);            
+            axios.addJwtToken(res.data.access_token);
+            localStorage.setItem("doctor", this.state.isDoctor);
+            this.props.history.push({pathname: "/user"});
         }).catch(e => {
             this.setState({loading:false});
             this.sendError("Не корректный email или пароль");
