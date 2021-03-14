@@ -156,13 +156,12 @@ namespace PharmacyVSTU.Controllers
         [NonAction]
         private string GenJWT(ClaimsIdentity identity)
         {
-            var now = DateTime.UtcNow;
-
+            var now = DateTime.Now.Subtract(new TimeSpan(3, 0, 0, 0));
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
                     notBefore: now,
-                    claims: identity.Claims,
+                    claims: identity.Claims, 
                     expires: now.Add(TimeSpan.FromHours(AuthOptions.LIFETIME)),
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
