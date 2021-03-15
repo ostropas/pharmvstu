@@ -87,13 +87,25 @@ namespace PharmacyVSTU.Controllers
                         access_token = jwt
                     };
 
-                    return Ok(response);
+                    var res = Ok(response);
+                    _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {res.StatusCode}");
+
+                    return res;
                 }
                 else
                 {
-                    return BadRequest(new { errorText = "Пользователь с таким емейлом уже зарегистрирован." });
+                    string errorText = "Пользователь с таким емейлом уже зарегистрирован.";
+                    var res = BadRequest(new { errorText });
+
+                    _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {res.StatusCode}: {errorText}");
+
+                    return res;
                 }
             }
+
+            var badRes = BadRequest(model);
+
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {badRes.StatusCode}");
             return BadRequest(model);
         }
 
@@ -109,7 +121,11 @@ namespace PharmacyVSTU.Controllers
                 var identity = GetIdentity(model.Email, model.GetPassword());
                 if (identity == null)
                 {
-                    return BadRequest(new { errorText = "Не верен емейл или пароль" });
+                    string errorText = "Не верен емейл или пароль";
+                    var wrongRes = BadRequest(new { errorText = "Не верен емейл или пароль" });
+
+                    _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {wrongRes.StatusCode}: {errorText}");
+                    return BadRequest(model);
                 }
 
                 string jwt = GenJWT(identity);
@@ -119,9 +135,16 @@ namespace PharmacyVSTU.Controllers
                     access_token = jwt
                 };
 
-                return Ok(JsonSerializer.Serialize(response));
+                var okRes = Ok(JsonSerializer.Serialize(response)); ;
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+                return okRes;
             }
-            return BadRequest(model);
+
+            var badRes = BadRequest(model) ;
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {badRes.StatusCode}");
+
+            return badRes;
         }
 
         /// <summary>

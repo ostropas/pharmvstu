@@ -42,7 +42,11 @@ namespace PharmacyVSTU.Controllers
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (doctor == null)
             {
-                return NotFound("Такой доктор не найден");
+                string errorText = "Такой доктор не найден";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
             // Достаем все связанные с доктором записи карт болезней
@@ -63,7 +67,10 @@ namespace PharmacyVSTU.Controllers
                 });
             }
 
-            return Ok(result);
+            var okRes = Ok(result);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -88,7 +95,10 @@ namespace PharmacyVSTU.Controllers
                 });
             }
 
-            return Ok(result);
+            var okRes = Ok(result);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -103,7 +113,11 @@ namespace PharmacyVSTU.Controllers
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.Id == doctorId);
             if(doctor == null)
             {
-                return NotFound("Такой доктор не найден");
+                string errorText = "Такой доктор не найден";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: errorText");
+
+                return notFoundRes;
             }
 
             var result = new
@@ -113,7 +127,10 @@ namespace PharmacyVSTU.Controllers
                 info = doctor.Info
             };
 
-            return Ok(result);
+            var okRes = Ok(result);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -132,14 +149,20 @@ namespace PharmacyVSTU.Controllers
             User user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             // Достаем запись пациента
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (doctor == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             if (!string.IsNullOrWhiteSpace(model.Email)) user.Email = model.Email;
@@ -148,7 +171,10 @@ namespace PharmacyVSTU.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { success = true });
+            var okRes = Ok(new { success = true });
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -163,7 +189,11 @@ namespace PharmacyVSTU.Controllers
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.Id == doctorId);
             if (doctor == null)
             {
-                return NotFound("Такой доктор не найден");
+                string errorText = "Такой доктор не найден";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
             var result = new List<object>();
@@ -177,7 +207,10 @@ namespace PharmacyVSTU.Controllers
                 });
             }
 
-            return Ok(result);
+            var okRes = Ok(result);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -196,16 +229,24 @@ namespace PharmacyVSTU.Controllers
             User user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (doctor == null)
             {
-                return NotFound("Такой доктор не найден");
+                string errorText = "Такой доктор не найден";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
-            foreach (var workingDay in model.workingTime)
+            foreach (var workingDay 
+                in model.workingTime)
             {
                 DoctorWorkingTime newWorkingDay = new DoctorWorkingTime()
                 {
@@ -231,7 +272,10 @@ namespace PharmacyVSTU.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            return Ok(new { success = true });
+            var okRes = Ok(new { success = true });
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -247,7 +291,11 @@ namespace PharmacyVSTU.Controllers
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.Id == doctorId);
             if (doctor == null)
             {
-                return NotFound("Такой доктор не найден");
+                string errorText = "Такой доктор не найден";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
             List<long> availabelTime = new List<long>();
@@ -272,7 +320,10 @@ namespace PharmacyVSTU.Controllers
                 }
             }
 
-            return Ok(availabelTime);
+            var okRes = Ok(availabelTime);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
     }
 }

@@ -45,7 +45,10 @@ namespace PharmacyVSTU.Controllers
 
             };
 
-            return Ok(userData);
+            var okRes = Ok(userData);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
     }
 }

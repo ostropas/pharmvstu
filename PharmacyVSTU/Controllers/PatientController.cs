@@ -40,14 +40,20 @@ namespace PharmacyVSTU.Controllers
             User user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if(user == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             // Достаем запись пациента
             Patient patient = await _db.Patients.FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (patient == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             var userData = new
@@ -57,7 +63,10 @@ namespace PharmacyVSTU.Controllers
                 cardId = patient.Id
             };
 
-            return Ok(userData);
+            var okRes = Ok(userData);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -75,14 +84,20 @@ namespace PharmacyVSTU.Controllers
             User user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             // Достаем запись пациента
             Patient patient = await _db.Patients.FirstOrDefaultAsync(x => x.User.Id == user.Id);
             if (user == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             if(!string.IsNullOrWhiteSpace(model.Email)) user.Email = model.Email;
@@ -90,7 +105,10 @@ namespace PharmacyVSTU.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { success = true });
+            var okRes = Ok(new { success = true });
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
     }
 }

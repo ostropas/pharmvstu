@@ -35,7 +35,10 @@ namespace PharmacyVSTU.Controllers
             Patient patien = await _db.Patients.FirstOrDefaultAsync(x => x.Id == cardId);
             if (patien == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             var deseaseCard = new List<object>();
@@ -49,7 +52,10 @@ namespace PharmacyVSTU.Controllers
                 });
             }
 
-            return Ok(deseaseCard);
+            var okRes = Ok(deseaseCard);
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
 
         /// <summary>
@@ -63,7 +69,11 @@ namespace PharmacyVSTU.Controllers
             Patient patien = await _db.Patients.FirstOrDefaultAsync(x => x.Id == cardId);
             if (patien == null)
             {
-                return NotFound("Не найдена такая карта");
+                string errorText = "Не найдена такая карта";
+                var notFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
             /* Тут доставали доктора по токену
@@ -82,7 +92,11 @@ namespace PharmacyVSTU.Controllers
             Doctor doctor = await _db.Doctors.FirstOrDefaultAsync(x => x.Id == deseaseRecord.DoctorId);
             if (doctor == null)
             {
-                return NotFound("Не найдена такой доктор");
+                string errorText = "Не найдена такой доктор";
+                var noFoundRes = NotFound(errorText);
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {noFoundRes.StatusCode}: {errorText}");
+
+                return noFoundRes;
             }
 
             DeseaseCardRecord newDeseaseRecord = new DeseaseCardRecord()
@@ -109,13 +123,20 @@ namespace PharmacyVSTU.Controllers
             Patient patient = await _db.Patients.FirstOrDefaultAsync(x => x.Id == cardId);
             if (patient == null)
             {
-                return NotFound("Не найдена такая карта");
+                string errorText = "Не найдена такая карта";
+                var notFoundRes = NotFound("Не найдена такая карта");
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}: {errorText}");
+
+                return notFoundRes;
             }
 
             DeseaseCardRecord lastDeseaseRecord = patient.DeseaseCardRecords.FirstOrDefault(c => c.Id == patient.DeseaseCardRecords.Max(x => x.Id)); // последняя запись имеет наибольшую цифру в поле ид
             if (lastDeseaseRecord == null)
             {
-                return NotFound();
+                var notFoundRes = NotFound();
+                _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {notFoundRes.StatusCode}");
+
+                return notFoundRes;
             }
 
             if (!string.IsNullOrWhiteSpace(deseaseRecord.Info)) lastDeseaseRecord.Info = deseaseRecord.Info;
@@ -123,7 +144,10 @@ namespace PharmacyVSTU.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { success = true });
+            var okRes = Ok(new { success = true });
+            _logger.Log(LogLevel.Information, $"{this.Request.Host.Value + this.Request.Path.Value}: {okRes.StatusCode}");
+
+            return okRes;
         }
     }
 }
